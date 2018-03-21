@@ -378,6 +378,12 @@ services:
             - "@prestashop.adapter.legacy.context"
             - "%database_prefix%"
 
+    prestashop.core.api.employee.repository:
+        class: PrestaShopBundle\Entity\Repository\EmployeeRepository
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '%database_prefix%'
+
     # Api - Controllers
     prestashop.core.api.controller:
         abstract: true

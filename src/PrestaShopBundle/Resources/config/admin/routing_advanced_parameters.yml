@@ -82,3 +82,11 @@ admin_administration_save:
     defaults:
         _controller: 'PrestaShopBundle:Admin\AdvancedParameters\Administration:processForm'
         _legacy_controller: AdminAdminPreferences
+
+# Team -> Employees
+admin_team_employees:
+    path: /team/employees
+    methods: [GET]
+    defaults:
+        _controller: 'PrestaShopBundle:Admin\Configure\AdvancedParameters\Team\Employee:index'
+        _legacy_controller: AdminEmployees
