@@ -1,0 +1,5 @@
+admin_brands:
+    path: /
+    defaults:
+        _controller: PrestaShopBundle:Admin/Sell/Catalog/Brand:index
+        _legacy_controller: AdminManufacturers
