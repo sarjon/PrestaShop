@@ -1,0 +1,13 @@
+admin_manufacturers:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: PrestaShopBundle:Admin/Sell/Catalog/Manufacturer:index
+        _legacy_controller: AdminManufacturers
+
+admin_manufacturers_add:
+    path: /add
+    methods: [GET, POST]
+    defaults:
+        _controller: PrestaShopBundle:Admin/Sell/Catalog/Manufacturer:add
+        _legacy_controller: AdminManufacturers

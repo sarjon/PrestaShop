@@ -432,3 +432,10 @@ services:
             - '@prestashop.adapter.data_provider.country'
         tags:
             - { name: form.type }
+
+    form.type.sell.catalog.manufacturer:
+        class: 'PrestaShopBundle\Form\Admin\Sell\Catalog\Brand\ManufacturerType'
+        parent: 'form.type.translatable.aware'
+        public: true
+        tags:
+            - { name: form.type }
