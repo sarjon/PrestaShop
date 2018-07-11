@@ -26,7 +26,9 @@
 
 namespace PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer;
 
+use PrestaShop\PrestaShop\Core\Feature\FeatureInterface;
 use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
+use PrestaShopBundle\Form\Admin\Type\Material\MaterialChoiceTreeType;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslateTextType;
 use PrestaShopBundle\Form\Admin\Type\TranslateType;
@@ -34,20 +36,37 @@ use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ManufacturerType extends TranslatorAwareType
 {
+    /**
+     * @var FeatureInterface
+     */
+    private $multishopFeature;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param array $locales
+     * @param FeatureInterface $multishopFeature
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+        array $locales,
+        FeatureInterface $multishopFeature
+    ) {
+        parent::__construct($translator, $locales);
+
+        $this->multishopFeature = $multishopFeature;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'attr' => [
-                    'class' => 'tokenfield',
-                ],
-            ])
+            ->add('name', TextType::class)
             ->add('short_description', TranslateType::class, [
                 'type' => FormattedTextareaType::class,
                 'options' => [
@@ -83,13 +102,14 @@ class ManufacturerType extends TranslatorAwareType
             ])
             ->add('meta_keywords', TranslateTextType::class, [
                 'locales' => $this->locales,
-                'attr' => [
-                    'class' => 'tokenfield',
-                ],
             ])
             ->add('active', SwitchType::class, [
                 'data' => false,
             ])
         ;
+
+        if ($this->multishopFeature->isActive()) {
+            $builder->add('shop_ids', MaterialChoiceTreeType::class);
+        }
     }
 }

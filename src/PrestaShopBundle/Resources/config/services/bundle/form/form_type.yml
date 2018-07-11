@@ -437,5 +437,7 @@ services:
         class: 'PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType'
         parent: 'form.type.translatable.aware'
         public: true
+        arguments:
+            - '@prestashop.adapter.multishop.feature'
         tags:
             - { name: form.type }
