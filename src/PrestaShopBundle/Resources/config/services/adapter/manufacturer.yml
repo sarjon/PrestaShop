@@ -4,3 +4,5 @@ services:
 
     prestashop.adapter.manufacturer.manager:
         class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerManager'
+        arguments:
+            - '@prestashop.adapter.manufacturer.image_uploader'

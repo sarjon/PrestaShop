@@ -26,13 +26,60 @@
 
 namespace PrestaShopBundle\Form\Admin\Type\Material;
 
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MaterialChoiceTreeType extends AbstractType
+class MaterialChoiceTreeType extends ChoiceType
 {
-    public function buildForm(FormBuilderInterface $formBuilder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $choices = [];
+        $this->getChoices($options['choices_tree'], $choices, $options['ignore_parent']);
 
+        $builder->add('choices', ChoiceType::class, [
+            'choices' => $choices,
+            'expanded' => true,
+            'multiple' => $options['multiple'],
+        ]);
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['choices_tree'] = $options['choices_tree'];
+        $view->vars['multiple'] = $options['multiple'];
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'multiple' => true,
+            'choices' => [],
+            'choices_tree' => [],
+            'ignore_parent' => true,
+        ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'material_choice_tree';
+    }
+
+    private function getChoices(array $choiceTree, array &$choices, $ignoreParent)
+    {
+        foreach ($choiceTree as $choice) {
+            if (!$ignoreParent || ($ignoreParent && empty($choice['children']))) {
+                $choices[$choice['name']] = $choice['value'];
+            }
+
+            if (!empty($choice['children'])) {
+                $this->getChoices($choice['children'], $choices, $ignoreParent);
+            }
+        }
     }
 }

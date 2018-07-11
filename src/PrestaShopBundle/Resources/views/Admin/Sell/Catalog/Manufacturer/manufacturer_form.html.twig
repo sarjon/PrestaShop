@@ -31,7 +31,7 @@
     <div class="row">
       <div class="col">
         {% block admin_form_brand %}
-          {{ form_start(manufacturerForm, {'action': path('admin_manufacturers_add')}) }}
+          {{ form_start(manufacturerForm) }}
           <div class="card">
             <h3 class="card-header">
               <i class="material-icons">branding_watermark</i> {{ 'Brands'|trans }}
@@ -57,6 +57,7 @@
 
               <div class="form-group">
                 {{ ps.label_with_help('Logo'|trans({}, 'Admin.Global'), ('Upload a brand logo from your computer.'|trans({}, 'Admin.Catalog.Help'))) }}
+                <br>
                 {{ form_errors(manufacturerForm.logo) }}
                 {{ form_widget(manufacturerForm.logo) }}
               </div>

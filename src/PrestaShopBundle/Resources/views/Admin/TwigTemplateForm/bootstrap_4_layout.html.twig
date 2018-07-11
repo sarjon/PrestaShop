@@ -580,3 +580,26 @@
     </div>
   {% endspaceless %}
 {% endblock material_multiple_choice_table_widget %}
+
+{% block material_choice_tree_widget %}
+  {{ form_widget(form) }}
+  <div class="category-tree-overflow">
+    <ul class="category-tree">
+      {%- for child in choices_tree %}
+        {{ block('material_choice_tree_item_widget') }}
+      {% endfor -%}
+    </ul>
+  </div>
+{% endblock material_choice_tree_widget %}
+
+{% block material_choice_tree_item_widget %}
+  <li class="tree-folder">
+    {{ child.name }}
+  </li>
+  {% if child.children is defined %}
+    {% for item in child.children %}
+      {% set child = item %}
+      {{ block('material_choice_tree_item_widget') }}
+    {% endfor -%}
+  {% endif %}
+{% endblock material_choice_tree_item_widget %}

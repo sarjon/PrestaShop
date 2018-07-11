@@ -50,4 +50,31 @@ class ManufacturerDataProvider
     {
         return Manufacturer::getManufacturers($get_nb_products, $id_lang, $active, $p, $n, $all_group, $group_by);
     }
+
+    /**
+     * Get manufacturer data
+     *
+     * @param int $manufacturerId
+     *
+     * @return array
+     */
+    public function getManufacturer($manufacturerId)
+    {
+        $manufacturer = new Manufacturer($manufacturerId);
+
+        if (!$manufacturer->id) {
+            return null;
+        }
+
+        return [
+            'id' => $manufacturer->id,
+            'name' => $manufacturer->name,
+            'description' => $manufacturer->description,
+            'short_description' => $manufacturer->short_description,
+            'meta_title' => $manufacturer->meta_title,
+            'meta_description' => $manufacturer->meta_description,
+            'meta_keywords' => $manufacturer->meta_keywords,
+            'active' => $manufacturer->active,
+        ];
+    }
 }

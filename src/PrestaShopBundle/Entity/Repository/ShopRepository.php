@@ -35,4 +35,8 @@ namespace PrestaShopBundle\Entity\Repository;
  */
 class ShopRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findGroupedShops()
+    {
+        
+    }
 }

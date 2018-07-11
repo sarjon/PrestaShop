@@ -30,6 +30,9 @@ use PrestaShop\PrestaShop\Adapter\Entity\Shop;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 use PrestaShop\PrestaShop\Core\Feature\FeatureInterface;
 
+/**
+ * @internal
+ */
 final class MultishopFeature implements FeatureInterface
 {
     /**

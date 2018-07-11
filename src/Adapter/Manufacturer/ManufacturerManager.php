@@ -27,6 +27,7 @@
 namespace PrestaShop\PrestaShop\Adapter\Manufacturer;
 
 use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @internal
@@ -34,13 +35,51 @@ use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer;
 class ManufacturerManager
 {
     /**
+     * @var ManufacturerImageUploader
+     */
+    private $imageUploader;
+
+    /**
+     * @param ManufacturerImageUploader $imageUploader
+     */
+    public function __construct(ManufacturerImageUploader $imageUploader)
+    {
+        $this->imageUploader = $imageUploader;
+    }
+
+    /**
      * Save manufacturer from given data
      *
      * @param array $data
      *
      * @return array
      */
-    public function saveFromData(array $data)
+    public function saveData(array $data)
+    {
+        $manufacturer = $this->createManufacturerFromData($data);
+
+        $errors = $this->validate($manufacturer);
+        if (!empty($errors)) {
+            return $errors;
+        }
+
+        $manufacturer->save();
+
+        if ($data['logo'] instanceof UploadedFile) {
+            $this->imageUploader->upload($manufacturer->id, $data['logo']);
+        }
+
+        return [];
+    }
+
+    /**
+     * Creates legacy manufacturer model from data
+     *
+     * @param array $data
+     *
+     * @return Manufacturer
+     */
+    private function createManufacturerFromData(array $data)
     {
         $manufacturer = new Manufacturer(isset($data['id']) ? $data['id'] : null);
         $manufacturer->name = $data['name'];
@@ -55,15 +94,31 @@ class ManufacturerManager
             $manufacturer->id_shop_list = $data['shop_ids'];
         }
 
-        // @todo: validate lang fields
-        $errors = $manufacturer->validateFields(false, true);
+        return $manufacturer;
+    }
 
-        if (true !== $errors) {
-            return [$errors];
+    /**
+     * Check that legacy manufacturer model is valid
+     *
+     * @param Manufacturer $manufacturer
+     *
+     * @return array
+     */
+    private function validate(Manufacturer $manufacturer)
+    {
+        $langFieldError = $manufacturer->validateFieldsLang(false, true);
+        $fieldError = $manufacturer->validateFields(false, true);
+
+        $errors = [];
+
+        if (true !== $fieldError) {
+            $errors[] = $fieldError;
         }
 
-        $manufacturer->save();
+        if (true !== $langFieldError) {
+            $errors[] = $langFieldError;
+        }
 
-        return [];
+        return $errors;
     }
 }

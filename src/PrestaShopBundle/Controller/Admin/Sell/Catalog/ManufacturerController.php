@@ -64,7 +64,7 @@ class ManufacturerController extends FrameworkBundleAdminController
     }
 
     /**
-     * Add new brand
+     * Add new manufacturer
      *
      * @param Request $request
      *
@@ -77,7 +77,7 @@ class ManufacturerController extends FrameworkBundleAdminController
 
         if ($manufacturerForm->isSubmitted()) {
             $manufacturerManager = $this->get('prestashop.adapter.manufacturer.manager');
-            $errors = $manufacturerManager->saveFromData($manufacturerForm->getData());
+            $errors = $manufacturerManager->saveData($manufacturerForm->getData());
 
             if (empty($errors)) {
                 $this->addFlash('success', $this->trans('Successful creation.', 'Admin.Notifications.Success'));
@@ -88,6 +88,43 @@ class ManufacturerController extends FrameworkBundleAdminController
 
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
             'layoutTitle' => $this->trans('Add new', 'Admin.Actions'),
+            'manufacturerForm' => $manufacturerForm->createView(),
+        ]);
+    }
+
+    /**
+     * Edit existing manufacturer
+     *
+     * @param Request $request
+     * @param int $manufacturerId
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, $manufacturerId)
+    {
+        $manufacturerDataProvider = $this->get('prestashop.adapter.data_provider.manufacturer');
+        $manufacturerData = $manufacturerDataProvider->getManufacturer($manufacturerId);
+
+        if (null === $manufacturerData) {
+            return $this->redirectToRoute('admin_manufacturers');
+        }
+
+        $manufacturerForm = $this->createForm(ManufacturerType::class, $manufacturerData);
+        $manufacturerForm->handleRequest($request);
+
+        if ($manufacturerForm->isSubmitted()) {
+            $manufacturerManager = $this->get('prestashop.adapter.manufacturer.manager');
+            $errors = $manufacturerManager->saveData($manufacturerForm->getData());
+
+            if (empty($errors)) {
+                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+
+                return $this->redirectToRoute('admin_manufacturers');
+            }
+        }
+
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
+            'layoutTitle' => $this->trans('Edit: %value%', 'Admin.Catalog.Feature', ['%value%' => $manufacturerData['name']]),
             'manufacturerForm' => $manufacturerForm->createView(),
         ]);
     }

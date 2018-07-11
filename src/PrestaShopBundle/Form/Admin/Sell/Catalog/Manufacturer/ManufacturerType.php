@@ -28,7 +28,6 @@ namespace PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer;
 
 use PrestaShop\PrestaShop\Core\Feature\FeatureInterface;
 use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
-use PrestaShopBundle\Form\Admin\Type\Material\MaterialChoiceTreeType;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslateTextType;
 use PrestaShopBundle\Form\Admin\Type\TranslateType;
@@ -91,14 +90,8 @@ class ManufacturerType extends TranslatorAwareType
             ->add('meta_title', TranslateTextType::class, [
                 'locales' => $this->locales,
             ])
-            ->add('meta_description', TranslateType::class, [
-                'type' => FormattedTextareaType::class,
-                'options' => [
-                    'required' => false,
-                ],
+            ->add('meta_description', TranslateTextType::class, [
                 'locales' => $this->locales,
-                'hideTabs' => false,
-                'required' => true,
             ])
             ->add('meta_keywords', TranslateTextType::class, [
                 'locales' => $this->locales,
@@ -107,9 +100,5 @@ class ManufacturerType extends TranslatorAwareType
                 'data' => false,
             ])
         ;
-
-        if ($this->multishopFeature->isActive()) {
-            $builder->add('shop_ids', MaterialChoiceTreeType::class);
-        }
     }
 }
