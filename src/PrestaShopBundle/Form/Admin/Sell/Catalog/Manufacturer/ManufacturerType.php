@@ -24,7 +24,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShopBundle\Form\Admin\Sell\Catalog\Brand;
+namespace PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer;
 
 use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
@@ -43,7 +43,11 @@ class ManufacturerType extends TranslatorAwareType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'tokenfield',
+                ],
+            ])
             ->add('short_description', TranslateType::class, [
                 'type' => FormattedTextareaType::class,
                 'options' => [
@@ -79,6 +83,9 @@ class ManufacturerType extends TranslatorAwareType
             ])
             ->add('meta_keywords', TranslateTextType::class, [
                 'locales' => $this->locales,
+                'attr' => [
+                    'class' => 'tokenfield',
+                ],
             ])
             ->add('active', SwitchType::class, [
                 'data' => false,

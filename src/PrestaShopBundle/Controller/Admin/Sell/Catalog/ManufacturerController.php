@@ -27,7 +27,7 @@
 namespace PrestaShopBundle\Controller\Admin\Sell\Catalog;
 
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
-use PrestaShopBundle\Form\Admin\Sell\Catalog\Brand\ManufacturerType;
+use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

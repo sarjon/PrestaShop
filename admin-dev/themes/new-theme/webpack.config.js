@@ -75,7 +75,10 @@ let config = {
     ],
     payment_preferences: [
       './js/pages/payment-preferences'
-    ]
+    ],
+    manufacturer: [
+      './js/pages/catalog/manufacturer'
+    ],
   },
   output: {
     path: path.resolve(__dirname, 'public'),

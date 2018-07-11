@@ -434,7 +434,7 @@ services:
             - { name: form.type }
 
     form.type.sell.catalog.manufacturer:
-        class: 'PrestaShopBundle\Form\Admin\Sell\Catalog\Brand\ManufacturerType'
+        class: 'PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType'
         parent: 'form.type.translatable.aware'
         public: true
         tags:
