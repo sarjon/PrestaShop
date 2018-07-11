@@ -89,6 +89,8 @@ class ManufacturerController extends FrameworkBundleAdminController
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
             'layoutTitle' => $this->trans('Add new', 'Admin.Actions'),
             'manufacturerForm' => $manufacturerForm->createView(),
+            'enableSidebar' => true,
+            'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
         ]);
     }
 
@@ -126,6 +128,24 @@ class ManufacturerController extends FrameworkBundleAdminController
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
             'layoutTitle' => $this->trans('Edit: %value%', 'Admin.Catalog.Feature', ['%value%' => $manufacturerData['name']]),
             'manufacturerForm' => $manufacturerForm->createView(),
+            'enableSidebar' => true,
+            'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
+        ]);
+    }
+
+    public function viewAction(Request $request, $manufacturerId)
+    {
+        $manufacturerDataProvider = $this->get('prestashop.adapter.data_provider.manufacturer');
+        $manufacturerData = $manufacturerDataProvider->getManufacturer($manufacturerId);
+
+        if (null === $manufacturerData) {
+            return $this->redirectToRoute('admin_manufacturers');
+        }
+
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_view.html.twig', [
+            'layoutTitle' => $manufacturerData['name'],
+            'enableSidebar' => true,
+            'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
         ]);
     }
 }

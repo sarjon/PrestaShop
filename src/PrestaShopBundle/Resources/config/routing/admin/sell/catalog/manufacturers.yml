@@ -20,3 +20,12 @@ admin_manufacturers_edit:
         _legacy_controller: AdminManufacturers
     requirements:
         manufacturerId: \d+
+
+admin_manufacturers_view:
+    path: /view/{manufacturerId}
+    methods: [GET, POST]
+    defaults:
+        _controller: PrestaShopBundle:Admin/Sell/Catalog/Manufacturer:view
+        _legacy_controller: AdminManufacturers
+    requirements:
+        manufacturerId: \d+
