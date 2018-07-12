@@ -29,3 +29,12 @@ admin_manufacturers_view:
         _legacy_controller: AdminManufacturers
     requirements:
         manufacturerId: \d+
+
+admin_manufacturer_address_add:
+    path: /{manufacturerId}/addresses/add
+    methods: [GET, POST]
+    defaults:
+        _controller: PrestaShopBundle:Admin/Sell/Catalog/Manufacturer:addAddress
+        _legacy_controller: AdminManufacturers
+    requirements:
+        manufacturerId: \d+

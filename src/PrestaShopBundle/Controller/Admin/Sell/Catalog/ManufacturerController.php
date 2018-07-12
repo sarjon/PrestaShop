@@ -29,6 +29,7 @@ namespace PrestaShopBundle\Controller\Admin\Sell\Catalog;
 use PrestaShop\PrestaShop\Adapter\Language\Language;
 use PrestaShop\PrestaShop\Adapter\Manufacturer\Manufacturer;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerAddressType;
 use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class ManufacturerController extends FrameworkBundleAdminController
      */
     public function indexAction(Request $request)
     {
-        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_listing.html.twig', [
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/listing.html.twig', [
             'layoutHeaderToolbarBtn' => [
                 'add_manufacturer' => [
                     'href' => $this->generateUrl('admin_manufacturers_add'),
@@ -88,7 +89,7 @@ class ManufacturerController extends FrameworkBundleAdminController
             }
         }
 
-        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/form.html.twig', [
             'layoutTitle' => $this->trans('Add new', 'Admin.Actions'),
             'manufacturerForm' => $manufacturerForm->createView(),
             'enableSidebar' => true,
@@ -168,6 +169,36 @@ class ManufacturerController extends FrameworkBundleAdminController
             'layoutTitle' => $manufacturer->getName(),
             'enableSidebar' => true,
             'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
+        ]);
+    }
+
+    /**
+     * Add new manufacturer address
+     *
+     * @param Request $request
+     * @param int     $manufacturerId
+     *
+     * @return Response
+     */
+    public function addAddressAction(Request $request, $manufacturerId)
+    {
+        $manufacturer = new Manufacturer($manufacturerId);
+
+        if (!$manufacturer->getId()) {
+            $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
+
+            return $this->redirectToRoute('admin_manufacturers');
+        }
+
+        $addressForm = $this->createForm(ManufacturerAddressType::class);
+        $addressForm->handleRequest($request);
+
+        if ($addressForm->isSubmitted()) {
+
+        }
+
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/address_form.html.twig', [
+            'manufacturerAddressForm' => $addressForm->createView(),
         ]);
     }
 }
