@@ -54,7 +54,7 @@ class ManufacturerManager
      *
      * @return array
      */
-    public function saveData(array $data)
+    public function save(array $data)
     {
         $manufacturer = $this->createManufacturerFromData($data);
 

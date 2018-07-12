@@ -64,4 +64,11 @@ interface ManufacturerInterface
      * @return array
      */
     public function getAddresses(LanguageInterface $language);
+
+    /**
+     * Get manufacturer as array
+     *
+     * @return array
+     */
+    public function toArray();
 }

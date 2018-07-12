@@ -57,7 +57,7 @@ final class Manufacturer implements ManufacturerInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -78,5 +78,26 @@ final class Manufacturer implements ManufacturerInterface
     public function getAddresses(LanguageInterface $language)
     {
         return $this->manufacturer->getAddresses($language->getId());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        if (!$this->manufacturer->id) {
+            return [];
+        }
+
+        return [
+            'id' => $this->manufacturer->id,
+            'name' => $this->manufacturer->name,
+            'description' => $this->manufacturer->description,
+            'short_description' => $this->manufacturer->short_description,
+            'meta_title' => $this->manufacturer->meta_title,
+            'meta_description' => $this->manufacturer->meta_description,
+            'meta_keywords' => $this->manufacturer->meta_keywords,
+            'active' => $this->manufacturer->active,
+        ];
     }
 }

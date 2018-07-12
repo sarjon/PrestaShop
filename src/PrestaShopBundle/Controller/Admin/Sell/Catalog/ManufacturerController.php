@@ -49,12 +49,12 @@ class ManufacturerController extends FrameworkBundleAdminController
     {
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_listing.html.twig', [
             'layoutHeaderToolbarBtn' => [
-                'add_brand' => [
+                'add_manufacturer' => [
                     'href' => $this->generateUrl('admin_manufacturers_add'),
                     'desc' => $this->trans('Add new brand', 'Admin.Catalog.Feature'),
                     'icon' => 'add_circle_outline',
                 ],
-                'add_brand_address' => [
+                'add_manufacturer_address' => [
                     'href' => $this->generateUrl('admin_manufacturers'),
                     'desc' => $this->trans('Add new brand address', 'Admin.Catalog.Feature'),
                     'icon' => 'add_circle_outline',
@@ -79,7 +79,7 @@ class ManufacturerController extends FrameworkBundleAdminController
 
         if ($manufacturerForm->isSubmitted()) {
             $manufacturerManager = $this->get('prestashop.adapter.manufacturer.manager');
-            $errors = $manufacturerManager->saveData($manufacturerForm->getData());
+            $errors = $manufacturerManager->save($manufacturerForm->getData());
 
             if (empty($errors)) {
                 $this->addFlash('success', $this->trans('Successful creation.', 'Admin.Notifications.Success'));
@@ -106,19 +106,20 @@ class ManufacturerController extends FrameworkBundleAdminController
      */
     public function editAction(Request $request, $manufacturerId)
     {
-        $manufacturerDataProvider = $this->get('prestashop.adapter.data_provider.manufacturer');
-        $manufacturerData = $manufacturerDataProvider->getManufacturer($manufacturerId);
+        $manufacturer = new Manufacturer($manufacturerId);
 
-        if (null === $manufacturerData) {
+        if (!$manufacturer->getId()) {
+            $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
+
             return $this->redirectToRoute('admin_manufacturers');
         }
 
-        $manufacturerForm = $this->createForm(ManufacturerType::class, $manufacturerData);
+        $manufacturerForm = $this->createForm(ManufacturerType::class, $manufacturer->toArray());
         $manufacturerForm->handleRequest($request);
 
         if ($manufacturerForm->isSubmitted()) {
             $manufacturerManager = $this->get('prestashop.adapter.manufacturer.manager');
-            $errors = $manufacturerManager->saveData($manufacturerForm->getData());
+            $errors = $manufacturerManager->save($manufacturerForm->getData());
 
             if (empty($errors)) {
                 $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
@@ -128,7 +129,7 @@ class ManufacturerController extends FrameworkBundleAdminController
         }
 
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
-            'layoutTitle' => $this->trans('Edit: %value%', 'Admin.Catalog.Feature', ['%value%' => $manufacturerData['name']]),
+            'layoutTitle' => $this->trans('Edit: %value%', 'Admin.Catalog.Feature', ['%value%' => $manufacturer->getName()]),
             'manufacturerForm' => $manufacturerForm->createView(),
             'enableSidebar' => true,
             'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
