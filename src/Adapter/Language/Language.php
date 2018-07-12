@@ -1,4 +1,5 @@
-{#**
+<?php
+/**
  * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
@@ -21,23 +22,36 @@
  * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
- *#}
+ */
 
-{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
-{% trans_default_domain 'Admin.Catalog.Feature' %}
+namespace PrestaShop\PrestaShop\Adapter\Language;
 
-{% block content %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        {% block manufacturer_address_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/address_listing.html.twig' %}
-        {% endblock %}
+use PrestaShop\PrestaShop\Adapter\Entity\Language as LanguageLegacy;
+use PrestaShop\PrestaShop\Core\Language\LanguageInterface;
 
-        {% block manufacturer_product_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/product_listing.html.twig' %}
-        {% endblock %}
-      </div>
-    </div>
-  </div>
-{% endblock %}
+/**
+ * @internal
+ */
+final class Language implements LanguageInterface
+{
+    /**
+     * @var LanguageLegacy
+     */
+    private $language;
+
+    /**
+     * @param int $languageId
+     */
+    public function __construct($languageId)
+    {
+        $this->language = new LanguageLegacy($languageId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return(int) $this->language->id;
+    }
+}

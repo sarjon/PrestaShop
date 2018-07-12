@@ -24,22 +24,59 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\PrestaShop\Core\Manufacturer\Provider;
+namespace PrestaShop\PrestaShop\Adapter\Manufacturer;
+
+use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer as ManufacturerLegacy;
 use PrestaShop\PrestaShop\Core\Language\LanguageInterface;
 use PrestaShop\PrestaShop\Core\Manufacturer\ManufacturerInterface;
 
 /**
- * Interface ManufacturerProductProvider defines contract for manufacturer product provider
+ * @internal
  */
-interface ManufacturerProductProviderInterface
+final class Manufacturer implements ManufacturerInterface
 {
     /**
-     * Get manufacturer products
-     *
-     * @param ManufacturerInterface $manufacturer
-     * @param LanguageInterface     $language
-     *
-     * @return array
+     * @var ManufacturerLegacy
      */
-    public function getProducts(ManufacturerInterface $manufacturer, LanguageInterface $language);
+    private $manufacturer;
+
+    /**
+     * @param int      $manufacturerId
+     */
+    public function __construct($manufacturerId)
+    {
+        $this->manufacturer = new ManufacturerLegacy($manufacturerId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return (int) $this->manufacturer->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->manufacturer->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProducts(LanguageInterface $language)
+    {
+        return $this->manufacturer->getProductsLite($language->getId());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAddresses(LanguageInterface $language)
+    {
+        return $this->manufacturer->getAddresses($language->getId());
+    }
 }

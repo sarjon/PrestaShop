@@ -1,4 +1,5 @@
-{#**
+<?php
+/**
  * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
@@ -21,23 +22,16 @@
  * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
- *#}
+ */
 
-{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
-{% trans_default_domain 'Admin.Catalog.Feature' %}
+namespace PrestaShop\PrestaShop\Core\Language;
 
-{% block content %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        {% block manufacturer_address_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/address_listing.html.twig' %}
-        {% endblock %}
-
-        {% block manufacturer_product_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/product_listing.html.twig' %}
-        {% endblock %}
-      </div>
-    </div>
-  </div>
-{% endblock %}
+interface LanguageInterface
+{
+    /**
+     * Get language ID
+     *
+     * @return int
+     */
+    public function getId();
+}

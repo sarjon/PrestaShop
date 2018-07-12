@@ -26,6 +26,8 @@
 
 namespace PrestaShopBundle\Controller\Admin\Sell\Catalog;
 
+use PrestaShop\PrestaShop\Adapter\Language\Language;
+use PrestaShop\PrestaShop\Adapter\Manufacturer\Manufacturer;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType;
 use Symfony\Component\HttpFoundation\Request;
@@ -137,32 +139,32 @@ class ManufacturerController extends FrameworkBundleAdminController
      * View manufacturer products & addresses
      *
      * @param Request $request
-     * @param int $manufacturerId
+     * @param int     $manufacturerId
      *
      * @return Response
      */
     public function viewAction(Request $request, $manufacturerId)
     {
-        $manufacturerDataProvider = $this->get('prestashop.adapter.data_provider.manufacturer');
-        $manufacturerData = $manufacturerDataProvider->getManufacturer($manufacturerId);
+        $language = new Language($this->getContext()->language->id);
+        $manufacturer = new Manufacturer($manufacturerId);
 
-        if (null === $manufacturerData) {
+        if (!$manufacturer->getId()) {
+            $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
+
             return $this->redirectToRoute('admin_manufacturers');
         }
 
         $configuration = $this->get('prestashop.adapter.legacy.configuration');
         $manufacturerProductProvider = $this->get('prestashop.adapter.manufacturer.product_provider');
-        $manufacturerProducts = $manufacturerProductProvider->getProducts(
-            $manufacturerData['id'],
-            $this->getContext()->language->id
-        );
 
-        dump($manufacturerProducts);
+        $manufacturerProducts = $manufacturerProductProvider->getProducts($manufacturer, $language);
+        $manufacturerAddresses = $manufacturer->getAddresses($language);
 
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/view.html.twig', [
             'manufacturerProducts' => $manufacturerProducts,
+            'manufacturerAddresses' => $manufacturerAddresses,
             'isStockManagementEnabled' => $configuration->get('PS_STOCK_MANAGEMENT'),
-            'layoutTitle' => $manufacturerData['name'],
+            'layoutTitle' => $manufacturer->getName(),
             'enableSidebar' => true,
             'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
         ]);

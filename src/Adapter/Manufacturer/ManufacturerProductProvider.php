@@ -26,28 +26,30 @@
 
 namespace PrestaShop\PrestaShop\Adapter\Manufacturer;
 
-use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer;
 use PrestaShop\PrestaShop\Adapter\Entity\Product;
+use PrestaShop\PrestaShop\Core\Language\LanguageInterface;
+use PrestaShop\PrestaShop\Core\Manufacturer\ManufacturerInterface;
 use PrestaShop\PrestaShop\Core\Manufacturer\Provider\ManufacturerProductProviderInterface;
 
+/**
+ * @internal
+ */
 final class ManufacturerProductProvider implements ManufacturerProductProviderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getProducts($manufacturerId, $langId)
+    public function getProducts(ManufacturerInterface $manufacturer, LanguageInterface $language)
     {
-        $manufacturer = new Manufacturer($manufacturerId);
-        $products = $manufacturer->getProductsLite($langId);
+        $products = $manufacturer->getProducts($language);
         $productsArray = [];
 
         foreach ($products as $product) {
-            $productObj = new Product($product['id_product'], false, $langId);
+            $productObj = new Product($product['id_product'], false, $language->getId());
             $productObj->loadStockData();
 
-            $combinations = $productObj->getAttributeCombinations($langId);
+            $combinations = $productObj->getAttributeCombinations($language->getId());
             $combinationsData = [];
-            $attributes = '';
 
             foreach ($combinations as $combination) {
                 $combinationsData[$combination['id_product_attribute']]['reference'] = $combination['reference'];

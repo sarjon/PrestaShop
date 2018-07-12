@@ -1,4 +1,5 @@
-{#**
+<?php
+/**
  * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
@@ -21,23 +22,46 @@
  * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
- *#}
+ */
 
-{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
-{% trans_default_domain 'Admin.Catalog.Feature' %}
+namespace PrestaShop\PrestaShop\Core\Manufacturer;
 
-{% block content %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        {% block manufacturer_address_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/address_listing.html.twig' %}
-        {% endblock %}
+use PrestaShop\PrestaShop\Core\Language\LanguageInterface;
 
-        {% block manufacturer_product_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/product_listing.html.twig' %}
-        {% endblock %}
-      </div>
-    </div>
-  </div>
-{% endblock %}
+/**
+ * Interface ManufacturerInterface defines contract for manufacturer
+ */
+interface ManufacturerInterface
+{
+    /**
+     * Get manufacturer ID
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * Get manufacturer name
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Get manufacturer products in given language
+     *
+     * @param LanguageInterface $language
+     *
+     * @return array
+     */
+    public function getProducts(LanguageInterface $language);
+
+    /**
+     * Get manufacturer addresses in given language
+     *
+     * @param LanguageInterface $language
+     *
+     * @return array
+     */
+    public function getAddresses(LanguageInterface $language);
+}

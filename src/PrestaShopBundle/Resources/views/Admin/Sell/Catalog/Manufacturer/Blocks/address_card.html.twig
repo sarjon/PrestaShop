@@ -23,21 +23,32 @@
  * International Registered Trademark & Property of PrestaShop SA
  *#}
 
-{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
 {% trans_default_domain 'Admin.Catalog.Feature' %}
 
-{% block content %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        {% block manufacturer_address_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/address_listing.html.twig' %}
-        {% endblock %}
-
-        {% block manufacturer_product_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/product_listing.html.twig' %}
-        {% endblock %}
-      </div>
-    </div>
+{% block manufacturer_address_card %}
+<div class="card">
+  <div class="card-header">
+    {{ address.firstname|upper }} {{ address.lastname|upper }}
   </div>
+  <div class="card-body">
+    <p class="card-text mb-0">{{ address.address1 }}</p>
+    {% if address.address2 %}
+      <p class="card-text mb-0">{{ address.address2 }}</p>
+    {% endif %}
+    <p class="card-text mb-0">{{ address.postcode ~ ' ' ~ address.city }}</p>
+    {% if address.state %}
+      <p class="card-text mb-0">{{ address.state }}</p>
+    {% endif %}
+    <p class="card-text mb-0"><strong>{{ address.country }}</strong></p>
+    {% if address.phone %}
+      <p class="card-text mb-0">{{ address.phone }}</p>
+    {% endif %}
+    {% if address.phone_mobile %}
+      <p class="card-text mb-0">{{ address.phone_mobile }}</p>
+    {% endif %}
+    {% if address.other %}
+      <div>{{ address.other|nl2br }}</div>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

@@ -23,21 +23,19 @@
  * International Registered Trademark & Property of PrestaShop SA
  *#}
 
-{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
 {% trans_default_domain 'Admin.Catalog.Feature' %}
 
-{% block content %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        {% block manufacturer_address_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/address_listing.html.twig' %}
-        {% endblock %}
-
-        {% block manufacturer_product_listing %}
-          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/product_listing.html.twig' %}
-        {% endblock %}
-      </div>
-    </div>
+<div class="card">
+  <h3 class="card-header">
+    {{ 'Addresses'|trans({}, 'Admin.Global') }} ({{ manufacturerAddresses|length }})
+  </h3>
+  <div class="card-body">
+    {% if manufacturerAddresses is not empty %}
+      {% for address in manufacturerAddresses %}
+        {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/address_card.html.twig' %}
+      {% endfor %}
+    {% else %}
+      {{ 'No address has been found for this brand.'|trans({}, 'Admin.Catalog.Notification') }}
+    {% endif %}
   </div>
-{% endblock %}
+</div>
