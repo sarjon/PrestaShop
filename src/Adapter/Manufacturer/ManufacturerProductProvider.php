@@ -26,6 +26,8 @@
 
 namespace PrestaShop\PrestaShop\Adapter\Manufacturer;
 
+use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer;
+use PrestaShop\PrestaShop\Adapter\Entity\Product;
 use PrestaShop\PrestaShop\Core\Manufacturer\Provider\ManufacturerProductProviderInterface;
 
 final class ManufacturerProductProvider implements ManufacturerProductProviderInterface
@@ -33,8 +35,55 @@ final class ManufacturerProductProvider implements ManufacturerProductProviderIn
     /**
      * {@inheritdoc}
      */
-    public function getProducts($langId)
+    public function getProducts($manufacturerId, $langId)
     {
+        $manufacturer = new Manufacturer($manufacturerId);
+        $products = $manufacturer->getProductsLite($langId);
+        $productsArray = [];
 
+        foreach ($products as $product) {
+            $productObj = new Product($product['id_product'], false, $langId);
+            $productObj->loadStockData();
+
+            $combinations = $productObj->getAttributeCombinations($langId);
+            $combinationsData = [];
+            $attributes = '';
+
+            foreach ($combinations as $combination) {
+                $combinationsData[$combination['id_product_attribute']]['reference'] = $combination['reference'];
+                $combinationsData[$combination['id_product_attribute']]['ean13'] = $combination['ean13'];
+                $combinationsData[$combination['id_product_attribute']]['upc'] = $combination['upc'];
+                $combinationsData[$combination['id_product_attribute']]['quantity'] = $combination['quantity'];
+                $combinationsData[$combination['id_product_attribute']]['attributes'][] = [
+                    $combination['group_name'],
+                    $combination['attribute_name'],
+                    $combination['id_attribute']
+                ];
+            }
+
+            if (!empty($combinationsData)) {
+                foreach ($combinationsData as $combinationId => $combination) {
+                    $attributes = '';
+
+                    foreach ($combination['attributes'] as list($groupName, $attributeName)) {
+                        $attributes .= sprintf('%s - %s,', $groupName, $attributeName);
+                    }
+
+                    $combinationsData[$combinationId]['attributes'] = rtrim($attributes, ', ');
+                }
+            }
+
+            $productsArray[] = [
+                'id' => $product['id_product'],
+                'name' => $product['name'],
+                'reference' => $productObj->reference,
+                'ean13' => $productObj->ean13,
+                'upc' => $productObj->upc,
+                'quantity' => $productObj->quantity,
+                'combinations' => $combinationsData,
+            ];
+        }
+
+        return $productsArray;
     }
 }

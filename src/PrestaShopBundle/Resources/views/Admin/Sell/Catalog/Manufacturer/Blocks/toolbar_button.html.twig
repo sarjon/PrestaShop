@@ -23,6 +23,13 @@
  * International Registered Trademark & Property of PrestaShop SA
  *#}
 
-{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
 {% trans_default_domain 'Admin.Catalog.Feature' %}
 
+<a href="{{ path('admin_product_form', {'id': product.id}) }}"
+   class="tooltip-link ml-1"
+   data-toggle="pstooltip"
+   title=""
+   data-placement="top"
+   data-original-title="{{ title }}">
+  <i class="material-icons">{{ icon }}</i>
+</a>

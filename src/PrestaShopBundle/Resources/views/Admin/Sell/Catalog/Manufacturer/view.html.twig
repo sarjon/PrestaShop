@@ -1,5 +1,4 @@
-<?php
-/**
+{#**
  * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
@@ -22,22 +21,24 @@
  * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
- */
+ *#}
 
-namespace PrestaShop\PrestaShop\Core\Manufacturer\Provider;
+{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
+{% trans_default_domain 'Admin.Catalog.Feature' %}
 
-/**
- * Interface ManufacturerProductProvider defines contract for manufacturer product provider
- */
-interface ManufacturerProductProviderInterface
-{
-    /**
-     * Get manufacturer products
-     *
-     * @param int $manufacturerId
-     * @param int $langId
-     *
-     * @return array
-     */
-    public function getProducts($manufacturerId, $langId);
-}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <h3 class="card-header">
+            {{ 'Addresses'|trans({}, 'Admin.Global') }}
+          </h3>
+        </div>
+        {% block manufacturer_product_listing %}
+          {% include '@PrestaShop/Admin/Sell/Catalog/Manufacturer/Blocks/product_listing.html.twig' %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -6,3 +6,6 @@ services:
         class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerManager'
         arguments:
             - '@prestashop.adapter.manufacturer.image_uploader'
+
+    prestashop.adapter.manufacturer.product_provider:
+        class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerProductProvider'
