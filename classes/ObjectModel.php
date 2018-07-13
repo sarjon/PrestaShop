@@ -25,6 +25,7 @@
  */
 
 use PrestaShop\PrestaShop\Adapter\ServiceLocator;
+use ReflectionClass;
 
 abstract class ObjectModelCore implements \PrestaShop\PrestaShop\Core\Foundation\Database\EntityInterface
 {
@@ -470,7 +471,7 @@ abstract class ObjectModelCore implements \PrestaShop\PrestaShop\Core\Foundation
      */
     public function getObjectName()
     {
-        return get_class($this);
+        return (new ReflectionClass($this))->getShortName();
     }
 
     /**
