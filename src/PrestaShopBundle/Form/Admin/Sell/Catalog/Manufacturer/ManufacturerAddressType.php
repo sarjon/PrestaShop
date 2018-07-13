@@ -27,6 +27,7 @@
 namespace PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer;
 
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
+use PrestaShop\PrestaShop\Core\Form\RequiredFormFieldProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,12 +42,28 @@ class ManufacturerAddressType extends AbstractType
     private $manufacturerChoiceProvider;
 
     /**
+     * @var FormChoiceProviderInterface
+     */
+    private $countryChoiceProvider;
+
+    /**
+     * @var RequiredFormFieldProviderInterface
+     */
+    private $manufacturerAddressFieldProvider;
+
+    /**
      * @param FormChoiceProviderInterface $manufacturerChoiceProvider
+     * @param FormChoiceProviderInterface $countryChoiceProvider
+     * @param RequiredFormFieldProviderInterface $manufacturerAddressFieldProvider
      */
     public function __construct(
-        FormChoiceProviderInterface $manufacturerChoiceProvider
+        FormChoiceProviderInterface $manufacturerChoiceProvider,
+        FormChoiceProviderInterface $countryChoiceProvider,
+        RequiredFormFieldProviderInterface $manufacturerAddressFieldProvider
     ) {
         $this->manufacturerChoiceProvider = $manufacturerChoiceProvider;
+        $this->countryChoiceProvider = $countryChoiceProvider;
+        $this->manufacturerAddressFieldProvider = $manufacturerAddressFieldProvider;
     }
 
     /**
@@ -64,11 +81,18 @@ class ManufacturerAddressType extends AbstractType
             ->add('address2', TextType::class)
             ->add('postcode', TextType::class)
             ->add('city', TextType::class)
-            ->add('country', TextType::class)
+            ->add('country', ChoiceType::class, [
+                'choices' => $this->countryChoiceProvider->getChoices(),
+            ])
             ->add('state', TextType::class)
             ->add('phone', TextType::class)
             ->add('phone_mobile', TextType::class)
             ->add('other', TextareaType::class)
         ;
+
+        $requiredFields = $this->manufacturerAddressFieldProvider->getFields();
+        if (in_array('company', $requiredFields)) {
+            $formBuilder->add('company', TextType::class);
+        }
     }
 }

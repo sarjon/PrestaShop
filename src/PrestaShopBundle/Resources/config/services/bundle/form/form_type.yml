@@ -446,5 +446,7 @@ services:
         class: 'PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerAddressType'
         arguments:
             - '@prestashop.core.form.choice_provider.manufacturer_by_id'
+            - '@prestashop.core.form.choice_provider.country_by_id'
+            - '@prestashop.core.form.field_provider.manufacturer_address'
         tags:
             - { name: form.type }

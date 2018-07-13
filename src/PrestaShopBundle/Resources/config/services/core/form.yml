@@ -53,3 +53,8 @@ services:
         class: 'PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ManufacturerByIdChoiceProvider'
         arguments:
             - '@prestashop.adapter.data_provider.manufacturer'
+
+    # Required form field providers
+
+    prestashop.core.form.field_provider.manufacturer_address:
+        class: 'PrestaShop\PrestaShop\Core\Form\FieldProvider\ManufacturerAddressFieldProvider'
