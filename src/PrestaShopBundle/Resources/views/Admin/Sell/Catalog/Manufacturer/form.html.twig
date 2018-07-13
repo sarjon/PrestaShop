@@ -56,6 +56,10 @@
               </div>
 
               <div class="form-group">
+                {% if thumbnailPath is defined and thumbnailSize is not empty %}
+                  <img src="{{ thumbnailPath }}" alt="" class="img-thumbnail">
+                {% endif %}
+
                 {{ ps.label_with_help('Logo'|trans({}, 'Admin.Global'), ('Upload a brand logo from your computer.'|trans({}, 'Admin.Catalog.Help'))) }}
                 <br>
                 {{ form_errors(manufacturerForm.logo) }}

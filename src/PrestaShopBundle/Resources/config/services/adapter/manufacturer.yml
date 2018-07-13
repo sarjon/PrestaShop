@@ -9,3 +9,11 @@ services:
 
     prestashop.adapter.manufacturer.product_provider:
         class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerProductProvider'
+
+    prestashop.adapter.manufacturer.thumbnail_generator:
+        class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerThumbnailGenerator'
+
+    prestashop.adapter.manufacturer.image_uploader:
+        class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerImageUploader'
+        arguments:
+            - '@prestashop.adapter.legacy.configuration'

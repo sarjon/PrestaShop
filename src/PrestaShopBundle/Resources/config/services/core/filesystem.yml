@@ -1,0 +1,6 @@
+services:
+    _defaults:
+        public: true
+
+    prestashop.core.filesystem.file_size_calculator:
+        class: 'PrestaShop\PrestaShop\Core\Filesystem\FileSizeCalculator'

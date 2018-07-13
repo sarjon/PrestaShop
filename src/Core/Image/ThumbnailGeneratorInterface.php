@@ -24,22 +24,18 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\PrestaShop\Core\Filesystem;
+namespace PrestaShop\PrestaShop\Core\Image;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * Interface FileUploaderInterface defines contract for file uploader
- */
-interface FileUploaderInterface
+interface ThumbnailGeneratorInterface
 {
     /**
-     * Upload file to filesystem
+     * Get path to thumbnail image
      *
-     * @param UploadedFile $file
+     * @param int $imageId
      *
      * @return File
      */
-    public function upload(UploadedFile $file);
+    public function getThumbnail($imageId);
 }

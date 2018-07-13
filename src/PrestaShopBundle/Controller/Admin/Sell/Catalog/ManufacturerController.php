@@ -30,9 +30,12 @@ use PrestaShop\PrestaShop\Adapter\Entity\PrestaShopObjectNotFoundException;
 use PrestaShop\PrestaShop\Adapter\Language\Language;
 use PrestaShop\PrestaShop\Adapter\Manufacturer\Address;
 use PrestaShop\PrestaShop\Adapter\Manufacturer\Manufacturer;
+use PrestaShop\PrestaShop\Core\Filesystem\FileSizeCalculator;
+use PrestaShop\PrestaShop\Core\Filesystem\FileSizeCalculatorInterface;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerAddressType;
 use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -116,6 +119,19 @@ class ManufacturerController extends FrameworkBundleAdminController
             return $this->createNotFoundRedirectResponse('admin_manufacturers');
         }
 
+        try {
+            $thumbnailGenerator = $this->get('prestashop.adapter.manufacturer.thumbnail_generator');
+            $thumbnail = $thumbnailGenerator->getThumbnail($manufacturer->getId());
+
+            $fileSizeCalculator = $this->get('prestashop.core.filesystem.file_size_calculator');
+
+            $thumbnailPath = $thumbnail->getPathname();
+            $thumbnailSize = $fileSizeCalculator->getFormattedSize($thumbnail);
+        } catch (FileNotFoundException $e) {
+            $thumbnailPath = '';
+            $thumbnailSize = '';
+        }
+
         $manufacturerForm = $this->createForm(ManufacturerType::class, $manufacturer->toArray());
         $manufacturerForm->handleRequest($request);
 
@@ -133,6 +149,8 @@ class ManufacturerController extends FrameworkBundleAdminController
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/form.html.twig', [
             'layoutTitle' => $this->trans('Edit: %value%', 'Admin.Catalog.Feature', ['%value%' => $manufacturer->getName()]),
             'manufacturerForm' => $manufacturerForm->createView(),
+            'thumbnailPath' => $thumbnailPath,
+            'thumbnailSize' => $thumbnailSize,
             'enableSidebar' => true,
             'help_link' => $this->generateSidebarLink($request->attributes->get('_legacy_controller')),
         ]);
