@@ -26,11 +26,14 @@
 
 namespace PrestaShopBundle\Controller\Admin\Sell\Catalog;
 
+use PrestaShop\PrestaShop\Adapter\Entity\PrestaShopObjectNotFoundException;
 use PrestaShop\PrestaShop\Adapter\Language\Language;
+use PrestaShop\PrestaShop\Adapter\Manufacturer\Address;
 use PrestaShop\PrestaShop\Adapter\Manufacturer\Manufacturer;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerAddressType;
 use PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -107,12 +110,10 @@ class ManufacturerController extends FrameworkBundleAdminController
      */
     public function editAction(Request $request, $manufacturerId)
     {
-        $manufacturer = new Manufacturer($manufacturerId);
-
-        if (!$manufacturer->getId()) {
-            $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
-
-            return $this->redirectToRoute('admin_manufacturers');
+        try {
+            $manufacturer = new Manufacturer($manufacturerId);
+        } catch (PrestaShopObjectNotFoundException $e) {
+            return $this->createNotFoundRedirectResponse('admin_manufacturers');
         }
 
         $manufacturerForm = $this->createForm(ManufacturerType::class, $manufacturer->toArray());
@@ -147,13 +148,11 @@ class ManufacturerController extends FrameworkBundleAdminController
      */
     public function viewAction(Request $request, $manufacturerId)
     {
-        $language = new Language($this->getContext()->language->id);
-        $manufacturer = new Manufacturer($manufacturerId);
-
-        if (!$manufacturer->getId()) {
-            $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
-
-            return $this->redirectToRoute('admin_manufacturers');
+        try {
+            $language = new Language($this->getContext()->language->id);
+            $manufacturer = new Manufacturer($manufacturerId);
+        } catch (PrestaShopObjectNotFoundException $e) {
+            return $this->createNotFoundRedirectResponse('admin_manufacturers');
         }
 
         $configuration = $this->get('prestashop.adapter.legacy.configuration');
@@ -189,16 +188,64 @@ class ManufacturerController extends FrameworkBundleAdminController
             $errors = $manufacturerManager->saveAddress($addressForm->getData());
 
             if (empty($errors)) {
-                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+                $this->addFlash('success', $this->trans('Successful creation.', 'Admin.Notifications.Success'));
 
                 return $this->redirectToRoute('admin_manufacturers');
             }
-
-            dump($errors);
         }
 
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/address_form.html.twig', [
             'manufacturerAddressForm' => $addressForm->createView(),
         ]);
+    }
+
+    /**
+     * Edit exiting manufacturer address
+     *
+     * @param Request $request
+     * @param int     $addressId
+     *
+     * @return Response
+     */
+    public function editAddressAction(Request $request, $addressId)
+    {
+        try {
+            $manufacturerAddress = new Address($addressId);
+        } catch (PrestaShopObjectNotFoundException $e) {
+            return $this->createNotFoundRedirectResponse('admin_manufacturers');
+        }
+
+        $addressForm = $this->createForm(ManufacturerAddressType::class, $manufacturerAddress->toArray());
+        $addressForm->handleRequest($request);
+
+        if ($addressForm->isSubmitted()) {
+            $manufacturerManager = $this->get('prestashop.adapter.manufacturer.manager');
+            $errors = $manufacturerManager->saveAddress($addressForm->getData());
+
+            if (empty($errors)) {
+                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+
+                return $this->redirectToRoute('admin_manufacturers');
+            }
+        }
+
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/address_form.html.twig', [
+            'manufacturerAddressForm' => $addressForm->createView(),
+            'manufacturerAddress' => $manufacturerAddress,
+        ]);
+    }
+
+    /**
+     * Get response for not found entity
+     *
+     * @param string $notFoundRoute
+     *
+     * @return RedirectResponse
+     */
+    protected function createNotFoundRedirectResponse($notFoundRoute)
+    {
+        $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
+
+        return $this->redirectToRoute($notFoundRoute);
     }
 }

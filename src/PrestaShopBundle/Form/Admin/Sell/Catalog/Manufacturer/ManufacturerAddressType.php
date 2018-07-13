@@ -82,7 +82,7 @@ class ManufacturerAddressType extends AbstractType
                 'required' => false,
             ])
             ->add('postcode', TextType::class, [
-                'required' =>false,
+                'required' => false,
             ])
             ->add('city', TextType::class)
             ->add('country', ChoiceType::class, [

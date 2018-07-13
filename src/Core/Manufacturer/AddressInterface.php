@@ -24,39 +24,24 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\PrestaShop\Adapter\Language;
-
-use PrestaShop\PrestaShop\Adapter\Entity\Language as LanguageLegacy;
-use PrestaShop\PrestaShop\Adapter\Entity\PrestaShopObjectNotFoundException;
-use PrestaShop\PrestaShop\Core\Language\LanguageInterface;
+namespace PrestaShop\PrestaShop\Core\Manufacturer;
 
 /**
- * @internal
+ * Interface AddressInterface defines contract for manufacturer address
  */
-final class Language implements LanguageInterface
+interface AddressInterface
 {
     /**
-     * @var LanguageLegacy
+     * Get manufacturer address ID
+     *
+     * @return int
      */
-    private $language;
+    public function getId();
 
     /**
-     * @param int $languageId
+     * Get manufacturer address as array
+     *
+     * @return array
      */
-    public function __construct($languageId)
-    {
-        $this->language = new LanguageLegacy($languageId);
-
-        if (!$this->language->id) {
-            throw new PrestaShopObjectNotFoundException(sprintf('Language with ID "%s" was not found.', $languageId));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return (int) $this->language->id;
-    }
+    public function toArray();
 }

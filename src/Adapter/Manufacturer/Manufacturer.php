@@ -27,6 +27,7 @@
 namespace PrestaShop\PrestaShop\Adapter\Manufacturer;
 
 use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer as ManufacturerLegacy;
+use PrestaShop\PrestaShop\Adapter\Entity\PrestaShopObjectNotFoundException;
 use PrestaShop\PrestaShop\Core\Language\LanguageInterface;
 use PrestaShop\PrestaShop\Core\Manufacturer\ManufacturerInterface;
 
@@ -46,6 +47,12 @@ final class Manufacturer implements ManufacturerInterface
     public function __construct($manufacturerId)
     {
         $this->manufacturer = new ManufacturerLegacy($manufacturerId);
+
+        if (!$this->manufacturer->id) {
+            throw new PrestaShopObjectNotFoundException(
+                sprintf('Manufacturer with ID "%s" was not found.', $manufacturerId)
+            );
+        }
     }
 
     /**

@@ -36,3 +36,12 @@ admin_manufacturer_address_add:
     defaults:
         _controller: PrestaShopBundle:Admin/Sell/Catalog/Manufacturer:addAddress
         _legacy_controller: AdminManufacturers
+
+admin_manufacturers_address_edit:
+    path: /addresses/edit/{addressId}
+    methods: [GET, POST]
+    defaults:
+        _controller: PrestaShopBundle:Admin/Sell/Catalog/Manufacturer:editAddress
+        _legacy_controller: AdminManufacturers
+    requirements:
+        addressId: \d+

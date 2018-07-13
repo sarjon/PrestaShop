@@ -38,14 +38,22 @@
             </h3>
             <div class="card-body">
               <div class="form-group">
-                <label class="form-control-label">{{ 'Choose the brand'|trans() }}</label>
+                {% set attr = {'data-minimumResultsForSearch': '7', 'data-toggle': 'select2'} %}
+                {% set label = 'Choose the brand'|trans %}
+
+                {% if manufacturerAddress is defined %}
+                  {% set attr = attr|merge({'disabled': 'disabled'}) %}
+                  {% set label = 'Brand'|trans({}, 'Admin.Global') %}
+                {% endif %}
+
+                <label class="form-control-label">{{ label }}</label>
                 {{ form_errors(manufacturerAddressForm.manufacturer) }}
-                {{ form_widget(manufacturerAddressForm.manufacturer, {'attr': {'data-minimumResultsForSearch': '7', 'data-toggle': 'select2', 'disabled': 'disabled'}}) }}
+                {{ form_widget(manufacturerAddressForm.manufacturer, {'attr': attr}) }}
               </div>
 
               {% if manufacturerAddressForm.company is defined %}
                 <div class="form-group">
-                  {{ ps.label_with_help('Company'|trans({}, 'Admin.Global'), ('Company name for this brand'|trans({}, 'Admin.Catalog.Help')), 'required') }}
+                  {{ ps.label_with_help('Company'|trans({}, 'Admin.Global'), ('Company name for this brand'|trans({}, 'Admin.Catalog.Help'))) }}
                   {{ form_errors(manufacturerAddressForm.company) }}
                   {{ form_widget(manufacturerAddressForm.company) }}
                 </div>
