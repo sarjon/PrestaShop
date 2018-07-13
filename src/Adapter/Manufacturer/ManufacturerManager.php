@@ -27,6 +27,8 @@
 namespace PrestaShop\PrestaShop\Adapter\Manufacturer;
 
 use PrestaShop\PrestaShop\Adapter\Entity\Manufacturer;
+use PrestaShop\PrestaShop\Adapter\Entity\ManufacturerAddress;
+use PrestaShop\PrestaShop\Adapter\Entity\ObjectModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -52,7 +54,7 @@ class ManufacturerManager
      *
      * @param array $data
      *
-     * @return array
+     * @return array Errors if any
      */
     public function save(array $data)
     {
@@ -68,6 +70,48 @@ class ManufacturerManager
         if ($data['logo'] instanceof UploadedFile) {
             $this->imageUploader->upload($manufacturer->id, $data['logo']);
         }
+
+        return [];
+    }
+
+    /**
+     * Save manufacturer address from given data
+     *
+     * @param array $data
+     *
+     * @return array Errors if any
+     */
+    public function saveAddress(array $data)
+    {
+        $address = new ManufacturerAddress(isset($data['id']) ? $data['id'] : null);
+
+        if (!$address->id) {
+            $address->id_manufacturer = $data['manufacturer'];
+        }
+
+        if (isset($data['company'])) {
+            $address->company = $data['company'];
+        }
+
+        $address->address1 = $data['address1'];
+        $address->address2 = $data['address2'];
+        $address->firstname = $data['first_name'];
+        $address->lastname = $data['last_name'];
+        $address->postcode = $data['postcode'];
+        $address->city = $data['city'];
+        $address->id_country = $data['country'];
+        $address->id_state = $data['state'];
+        $address->phone = $data['phone'];
+        $address->phone_mobile = $data['phone_mobile'];
+        $address->other = $data['other'];
+        $address->alias = 'manufacturer';
+
+        $errors = $this->validate($address);
+        if (!empty($errors)) {
+            return $errors;
+        }
+
+        $address->save();
 
         return [];
     }
@@ -100,14 +144,14 @@ class ManufacturerManager
     /**
      * Check that legacy manufacturer model is valid
      *
-     * @param Manufacturer $manufacturer
+     * @param ObjectModel $model
      *
      * @return array
      */
-    private function validate(Manufacturer $manufacturer)
+    private function validate($model)
     {
-        $langFieldError = $manufacturer->validateFieldsLang(false, true);
-        $fieldError = $manufacturer->validateFields(false, true);
+        $langFieldError = $model->validateFieldsLang(false, true);
+        $fieldError = $model->validateFields(false, true);
 
         $errors = [];
 

@@ -56,7 +56,7 @@ class ManufacturerController extends FrameworkBundleAdminController
                     'icon' => 'add_circle_outline',
                 ],
                 'add_manufacturer_address' => [
-                    'href' => $this->generateUrl('admin_manufacturers'),
+                    'href' => $this->generateUrl('admin_manufacturer_address_add'),
                     'desc' => $this->trans('Add new brand address', 'Admin.Catalog.Feature'),
                     'icon' => 'add_circle_outline',
                 ],
@@ -176,25 +176,25 @@ class ManufacturerController extends FrameworkBundleAdminController
      * Add new manufacturer address
      *
      * @param Request $request
-     * @param int     $manufacturerId
      *
      * @return Response
      */
-    public function addAddressAction(Request $request, $manufacturerId)
+    public function addAddressAction(Request $request)
     {
-        $manufacturer = new Manufacturer($manufacturerId);
-
-        if (!$manufacturer->getId()) {
-            $this->addFlash('error', $this->trans('The object cannot be loaded (or found)', 'Admin.Notifications.Error'));
-
-            return $this->redirectToRoute('admin_manufacturers');
-        }
-
         $addressForm = $this->createForm(ManufacturerAddressType::class);
         $addressForm->handleRequest($request);
 
         if ($addressForm->isSubmitted()) {
+            $manufacturerManager = $this->get('prestashop.adapter.manufacturer.manager');
+            $errors = $manufacturerManager->saveAddress($addressForm->getData());
 
+            if (empty($errors)) {
+                $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+
+                return $this->redirectToRoute('admin_manufacturers');
+            }
+
+            dump($errors);
         }
 
         return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/address_form.html.twig', [

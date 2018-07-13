@@ -78,16 +78,28 @@ class ManufacturerAddressType extends AbstractType
             ->add('first_name', TextType::class)
             ->add('last_name', TextType::class)
             ->add('address1', TextType::class)
-            ->add('address2', TextType::class)
-            ->add('postcode', TextType::class)
+            ->add('address2', TextType::class, [
+                'required' => false,
+            ])
+            ->add('postcode', TextType::class, [
+                'required' =>false,
+            ])
             ->add('city', TextType::class)
             ->add('country', ChoiceType::class, [
                 'choices' => $this->countryChoiceProvider->getChoices(),
             ])
-            ->add('state', TextType::class)
-            ->add('phone', TextType::class)
-            ->add('phone_mobile', TextType::class)
-            ->add('other', TextareaType::class)
+            ->add('state', TextType::class, [
+                'required' => false,
+            ])
+            ->add('phone', TextType::class, [
+                'required' => false,
+            ])
+            ->add('phone_mobile', TextType::class, [
+                'required' => false,
+            ])
+            ->add('other', TextareaType::class, [
+                'required' => false,
+            ])
         ;
 
         $requiredFields = $this->manufacturerAddressFieldProvider->getFields();

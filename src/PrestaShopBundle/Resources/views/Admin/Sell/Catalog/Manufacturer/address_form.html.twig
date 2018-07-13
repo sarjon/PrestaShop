@@ -40,8 +40,16 @@
               <div class="form-group">
                 <label class="form-control-label">{{ 'Choose the brand'|trans() }}</label>
                 {{ form_errors(manufacturerAddressForm.manufacturer) }}
-                {{ form_widget(manufacturerAddressForm.manufacturer, {'attr': {'data-minimumResultsForSearch': '7', 'data-toggle': 'select2'}}) }}
+                {{ form_widget(manufacturerAddressForm.manufacturer, {'attr': {'data-minimumResultsForSearch': '7', 'data-toggle': 'select2', 'disabled': 'disabled'}}) }}
               </div>
+
+              {% if manufacturerAddressForm.company is defined %}
+                <div class="form-group">
+                  {{ ps.label_with_help('Company'|trans({}, 'Admin.Global'), ('Company name for this brand'|trans({}, 'Admin.Catalog.Help')), 'required') }}
+                  {{ form_errors(manufacturerAddressForm.company) }}
+                  {{ form_widget(manufacturerAddressForm.company) }}
+                </div>
+              {% endif %}
 
               <div class="form-group">
                 {{ ps.label_with_help('First name'|trans({}, 'Admin.Global'), ('Invalid characters:'|trans({}, 'Admin.Notifications.Info')~' 0-9!&lt;&gt;,;?=+()@#"�{}_$%:')) }}
@@ -54,14 +62,6 @@
                 {{ form_errors(manufacturerAddressForm.last_name) }}
                 {{ form_widget(manufacturerAddressForm.last_name) }}
               </div>
-
-              {% if manufacturerAddressForm.company is defined %}
-                <div class="form-group">
-                  {{ ps.label_with_help('Company'|trans({}, 'Admin.Global'), ('Company name for this brand'|trans({}, 'Admin.Catalog.Help'))) }}
-                  {{ form_errors(manufacturerAddressForm.company) }}
-                  {{ form_widget(manufacturerAddressForm.company) }}
-                </div>
-              {% endif %}
 
               <div class="form-group">
                 <label class="form-control-label">{{ 'Address'|trans({}, 'Admin.Global') }}</label>
