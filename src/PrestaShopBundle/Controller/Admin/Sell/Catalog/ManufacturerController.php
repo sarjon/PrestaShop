@@ -129,7 +129,7 @@ class ManufacturerController extends FrameworkBundleAdminController
             }
         }
 
-        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/manufacturer_form.html.twig', [
+        return $this->render('@PrestaShop/Admin/Sell/Catalog/Manufacturer/form.html.twig', [
             'layoutTitle' => $this->trans('Edit: %value%', 'Admin.Catalog.Feature', ['%value%' => $manufacturer->getName()]),
             'manufacturerForm' => $manufacturerForm->createView(),
             'enableSidebar' => true,

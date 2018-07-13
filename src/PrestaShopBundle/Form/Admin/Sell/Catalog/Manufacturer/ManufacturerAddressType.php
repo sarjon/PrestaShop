@@ -26,6 +26,7 @@
 
 namespace PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer;
 
+use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,12 +36,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ManufacturerAddressType extends AbstractType
 {
     /**
+     * @var FormChoiceProviderInterface
+     */
+    private $manufacturerChoiceProvider;
+
+    /**
+     * @param FormChoiceProviderInterface $manufacturerChoiceProvider
+     */
+    public function __construct(
+        FormChoiceProviderInterface $manufacturerChoiceProvider
+    ) {
+        $this->manufacturerChoiceProvider = $manufacturerChoiceProvider;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $formBuilder, array $options)
     {
         $formBuilder
-            ->add('manufacturer', ChoiceType::class)
+            ->add('manufacturer', ChoiceType::class, [
+                'choices' => $this->manufacturerChoiceProvider->getChoices(),
+            ])
             ->add('first_name', TextType::class)
             ->add('last_name', TextType::class)
             ->add('address1', TextType::class)

@@ -48,3 +48,8 @@ services:
         arguments:
             - '@prestashop.adapter.data_provider.carrier'
             - '@=service("prestashop.adapter.legacy.context").getLanguage().id'
+
+    prestashop.core.form.choice_provider.manufacturer_by_id:
+        class: 'PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ManufacturerByIdChoiceProvider'
+        arguments:
+            - '@prestashop.adapter.data_provider.manufacturer'

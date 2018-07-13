@@ -441,3 +441,10 @@ services:
             - '@prestashop.adapter.multishop.feature'
         tags:
             - { name: form.type }
+
+    form.type.sell.catalog.manufacturer_address:
+        class: 'PrestaShopBundle\Form\Admin\Sell\Catalog\Manufacturer\ManufacturerAddressType'
+        arguments:
+            - '@prestashop.core.form.choice_provider.manufacturer_by_id'
+        tags:
+            - { name: form.type }
