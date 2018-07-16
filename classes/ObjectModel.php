@@ -25,7 +25,6 @@
  */
 
 use PrestaShop\PrestaShop\Adapter\ServiceLocator;
-use ReflectionClass;
 
 abstract class ObjectModelCore implements \PrestaShop\PrestaShop\Core\Foundation\Database\EntityInterface
 {
