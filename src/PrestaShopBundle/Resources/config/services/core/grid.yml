@@ -9,17 +9,17 @@ services:
 
     # Grid data providers
     prestashop.core.grid.data_provider.log:
-        class: 'PrestaShop\PrestaShop\Core\Grid\DataProvider\DoctrineGridDataProvider'
+        class: 'PrestaShop\PrestaShop\Core\Grid\Data\DoctrineGridDataFactory'
         arguments:
             - '@prestashop.core.admin.log.repository'
 
     prestashop.core.grid.data_provider.email_logs:
-        class: 'PrestaShop\PrestaShop\Core\Grid\DataProvider\DoctrineGridDataProvider'
+        class: 'PrestaShop\PrestaShop\Core\Grid\Data\DoctrineGridDataFactory'
         arguments:
             - '@prestashop.core.grid.query_builder.email_logs'
 
     prestashop.core.grid.data_provider.request_sql:
-        class: 'PrestaShop\PrestaShop\Core\Grid\DataProvider\DoctrineGridDataProvider'
+        class: 'PrestaShop\PrestaShop\Core\Grid\Data\DoctrineGridDataFactory'
         arguments:
             - '@prestashop.core.admin.request_sql.repository'
 

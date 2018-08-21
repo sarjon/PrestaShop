@@ -29,8 +29,8 @@ namespace Tests\Unit\Core\Grid\DataProvider;
 use Doctrine\DBAL\Query\QueryBuilder;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
-use PrestaShop\PrestaShop\Core\Grid\DataProvider\DoctrineGridDataProvider;
-use PrestaShop\PrestaShop\Core\Grid\DataProvider\GridDataInterface;
+use PrestaShop\PrestaShop\Core\Grid\Data\DoctrineGridDataFactory;
+use PrestaShop\PrestaShop\Core\Grid\Data\GridDataInterface;
 use PrestaShop\PrestaShop\Core\Grid\Query\DoctrineQueryBuilderInterface;
 use PrestaShop\PrestaShop\Core\Grid\Record\RecordCollectionInterface;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
@@ -38,13 +38,13 @@ use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
 class DoctrineGridDataProviderTest extends TestCase
 {
     /**
-     * @var DoctrineGridDataProvider
+     * @var DoctrineGridDataFactory
      */
     private $doctrineDataProvider;
 
     public function setUp()
     {
-        $this->doctrineDataProvider = new DoctrineGridDataProvider($this->createDoctrineQueryBuilderMock());
+        $this->doctrineDataProvider = new DoctrineGridDataFactory($this->createDoctrineQueryBuilderMock());
     }
 
     public function testItProvidesGridData()

@@ -24,19 +24,33 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\PrestaShop\Core\Grid\DataProvider;
+namespace PrestaShop\PrestaShop\Core\Grid\Data;
 
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
+use PrestaShop\PrestaShop\Core\Grid\Record\RecordCollection;
 
 /**
- * Interface GridDataProviderInterface defines contract for grid data providers
+ * Interface GridDataInterface exposes contract for final grid data
  */
-interface GridDataProviderInterface
+interface GridDataInterface
 {
     /**
-     * @param SearchCriteriaInterface $searchCriteria
+     * Returns final grid rows ready for rendering
      *
-     * @return GridData
+     * @return RecordCollection
      */
-    public function getData(SearchCriteriaInterface $searchCriteria);
+    public function getRecords();
+
+    /**
+     * Returns total rows in data source
+     *
+     * @return int
+     */
+    public function getRecordsTotal();
+
+    /**
+     * Return query which was used to get rows
+     *
+     * @return string
+     */
+    public function getQuery();
 }

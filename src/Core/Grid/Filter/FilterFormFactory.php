@@ -26,8 +26,6 @@
 
 namespace PrestaShop\PrestaShop\Core\Grid\Filter;
 
-use PrestaShop\PrestaShop\Core\Grid\Column\ColumnFilterOption;
-use PrestaShop\PrestaShop\Core\Grid\Column\ColumnInterface;
 use PrestaShop\PrestaShop\Core\Grid\Definition\DefinitionInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
