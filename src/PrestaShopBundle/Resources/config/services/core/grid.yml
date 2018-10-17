@@ -150,7 +150,7 @@ services:
             - "@=service('router').generate('admin_common_reset_search', {'controller': 'category', 'action': 'index'})"
             - "@=service('router').generate('admin_category_listing')"
             - '@prestashop.adapter.shop.context'
-            - '@prestashop.adapter.grid.action.row.accessibility_checker.category_for_view'
+            - '@prestashop.adapter.grid.action.checker.category_for_view_action_checker'
         public: true
 
     prestashop.core.grid.definition.factory.employee:
@@ -159,6 +159,7 @@ services:
         arguments:
             - "@=service('router').generate('admin_common_reset_search', {'controller': 'employee', 'action': 'index'})"
             - "@=service('router').generate('admin_employees_index')"
+            - '@prestashop.adapter.grid.action.checker.delete_employee_action_checker'
         public: true
 
     prestashop.core.grid.definition.factory.contacts:

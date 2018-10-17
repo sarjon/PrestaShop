@@ -26,6 +26,7 @@
 
 namespace PrestaShop\PrestaShop\Core\Grid\Definition\Factory;
 
+use PrestaShop\PrestaShop\Core\Grid\Action\ActionCheckerInterface;
 use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\BulkActionCollection;
 use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\Type\SubmitBulkAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\GridActionCollection;
@@ -62,13 +63,20 @@ final class EmployeeGridDefinitionFactory extends AbstractGridDefinitionFactory
     private $redirectUrl;
 
     /**
+     * @var ActionCheckerInterface
+     */
+    private $deleteEmployeeActionChecker;
+
+    /**
      * @param string $resetUrl
      * @param string $redirectUrl
+     * @param ActionCheckerInterface $deleteEmployeeActionChecker
      */
-    public function __construct($resetUrl, $redirectUrl)
+    public function __construct($resetUrl, $redirectUrl, ActionCheckerInterface $deleteEmployeeActionChecker)
     {
         $this->resetUrl = $resetUrl;
         $this->redirectUrl = $redirectUrl;
+        $this->deleteEmployeeActionChecker = $deleteEmployeeActionChecker;
     }
 
     /**
@@ -160,6 +168,7 @@ final class EmployeeGridDefinitionFactory extends AbstractGridDefinitionFactory
                                 'route' => 'admin_employees_index',
                                 'route_param_name' => 'employeeId',
                                 'route_param_field' => 'id_employee',
+                                'accessibility_checker' => [$this->deleteEmployeeActionChecker, 'canApplyOn'],
                             ])
                         ),
                 ])

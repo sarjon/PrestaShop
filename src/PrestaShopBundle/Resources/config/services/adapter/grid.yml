@@ -12,7 +12,10 @@ services:
             - '@=service("prestashop.adapter.legacy.context").getContext().shop.id_category'
 
     # Action accessibility checkers
-    prestashop.adapter.grid.action.row.accessibility_checker.category_for_view:
-        class: 'PrestaShop\PrestaShop\Adapter\Grid\Action\Row\AccessibilityChecker\CategoryForViewAccessibilityChecker'
+    prestashop.adapter.grid.action.checker.category_for_view_action_checker:
+        class: 'PrestaShop\PrestaShop\Adapter\Grid\Action\Checker\CategoryForViewActionChecker'
         arguments:
             - '@=service("prestashop.adapter.legacy.context").getContext().language.id'
+
+    prestashop.adapter.grid.action.checker.delete_employee_action_checker:
+        class: 'PrestaShop\PrestaShop\Adapter\Grid\Action\Checker\DeleteEmployeeActionChecker'

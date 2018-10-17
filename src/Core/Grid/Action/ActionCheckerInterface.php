@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2018 PrestaShop.
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -24,19 +24,19 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\PrestaShop\Core\Grid\Action\Row\AccessibilityChecker;
+namespace PrestaShop\PrestaShop\Core\Grid\Action;
 
 /**
- * Interface ApplicabilityCheckerInterface.
+ * Interface ActionCheckerInterface.
  */
-interface AccessibilityCheckerInterface
+interface ActionCheckerInterface
 {
     /**
-     * Check if record is applicable for row action.
+     * Check if particular action can be performed on record.
      *
      * @param array $record
      *
      * @return bool
      */
-    public function isGranted(array $record);
+    public function canApplyOn(array $record);
 }

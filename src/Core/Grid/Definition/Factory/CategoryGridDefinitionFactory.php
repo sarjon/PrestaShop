@@ -26,11 +26,11 @@
 
 namespace PrestaShop\PrestaShop\Core\Grid\Definition\Factory;
 
+use PrestaShop\PrestaShop\Core\Grid\Action\ActionCheckerInterface;
 use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\BulkActionCollection;
 use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\Type\Catalog\Category\DeleteCategoriesBulkAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\Type\SubmitBulkAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\GridActionCollection;
-use PrestaShop\PrestaShop\Core\Grid\Action\Row\AccessibilityChecker\AccessibilityCheckerInterface;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\RowActionCollection;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\Type\Category\DeleteCategoryRowAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\Type\LinkRowAction;
@@ -66,7 +66,7 @@ final class CategoryGridDefinitionFactory extends AbstractGridDefinitionFactory
     private $redirectActionUrl;
 
     /**
-     * @var AccessibilityCheckerInterface
+     * @var ActionCheckerInterface
      */
     private $categoryForViewAccessibilityChecker;
 
@@ -79,13 +79,13 @@ final class CategoryGridDefinitionFactory extends AbstractGridDefinitionFactory
      * @param string $resetActionUrl
      * @param string $redirectActionUrl
      * @param MultistoreContextCheckerInterface $multistoreContextChecker
-     * @param AccessibilityCheckerInterface $categoryForViewAccessibilityChecker
+     * @param ActionCheckerInterface $categoryForViewAccessibilityChecker
      */
     public function __construct(
         $resetActionUrl,
         $redirectActionUrl,
         MultistoreContextCheckerInterface $multistoreContextChecker,
-        AccessibilityCheckerInterface $categoryForViewAccessibilityChecker
+        ActionCheckerInterface $categoryForViewAccessibilityChecker
     ) {
         $this->resetActionUrl = $resetActionUrl;
         $this->redirectActionUrl = $redirectActionUrl;
@@ -301,7 +301,7 @@ final class CategoryGridDefinitionFactory extends AbstractGridDefinitionFactory
                     'route' => 'admin_category_listing',
                     'route_param_name' => 'id_category',
                     'route_param_field' => 'id_category',
-                    'accessibility_checker' => $this->categoryForViewAccessibilityChecker,
+                    'accessibility_checker' => [$this->categoryForViewAccessibilityChecker, 'canApplyOn'],
                 ])
             )
             ->add((new LinkRowAction('edit'))

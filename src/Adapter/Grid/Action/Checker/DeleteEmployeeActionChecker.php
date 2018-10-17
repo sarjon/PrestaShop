@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2018 PrestaShop.
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -24,38 +24,33 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\PrestaShop\Adapter\Grid\Action\Row\AccessibilityChecker;
+namespace PrestaShop\PrestaShop\Adapter\Grid\Action\Checker;
 
-use Category;
-use PrestaShop\PrestaShop\Core\Grid\Action\Row\AccessibilityChecker\AccessibilityCheckerInterface;
+use Context;
+use Employee;
+use PrestaShop\PrestaShop\Core\Grid\Action\ActionCheckerInterface;
 
 /**
- * Class CategoryForViewAccessibilityChecker.
- *
- * @internal
+ * Class DeleteEmployeeActionChecker checks if "delete" action can be applied to given employee.
  */
-final class CategoryForViewAccessibilityChecker implements AccessibilityCheckerInterface
+final class DeleteEmployeeActionChecker implements ActionCheckerInterface
 {
-    /**
-     * @var int
-     */
-    private $contextLangId;
-
-    /**
-     * @param int $contextLangId
-     */
-    public function __construct($contextLangId)
-    {
-        $this->contextLangId = $contextLangId;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function isGranted(array $category)
+    public function canApplyOn(array $employee)
     {
-        $categoryChildren = Category::getChildren($category['id_category'], $this->contextLangId);
+        $cannotBeDeletedAdmins = [Context::getContext()->employee->id];
+        $superAdminCount = (int) Employee::countProfile(_PS_ADMIN_PROFILE_, true);
 
-        return !empty($categoryChildren);
+        if (1 === $superAdminCount) {
+            $superAdmins = Employee::getEmployeesByProfile(_PS_ADMIN_PROFILE_, true);
+
+            foreach ($superAdmins as $val) {
+                $cannotBeDeletedAdmins[] = $val['id_employee'];
+            }
+        }
+
+        return !in_array((int) $employee['id_employee'], $cannotBeDeletedAdmins);
     }
 }

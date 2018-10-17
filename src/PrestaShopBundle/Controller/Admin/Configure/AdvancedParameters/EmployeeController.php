@@ -57,7 +57,7 @@ class EmployeeController extends FrameworkBundleAdminController
 
         $employeeGridFactory = $this->get('prestashop.core.grid.factory.employee');
         $employeeGrid = $employeeGridFactory->getGrid($filters);
-
+        dump($employeeGrid);
         return $this->render('@PrestaShop/Admin/Configure/AdvancedParameters/Employee/index.html.twig', [
             'employeeOptionsForm' => $employeeOptionsForm->createView(),
             'canOptionsBeChanged' => $employeeOptionsChecker->canBeChanged(),
