@@ -1,0 +1,5 @@
+admin_customer_groups_index:
+    path: /
+    methods: [GET]
+    defaults:
+      _controller: 'PrestaShopBundle:Admin\Configure\ShopParameters\Group:index'

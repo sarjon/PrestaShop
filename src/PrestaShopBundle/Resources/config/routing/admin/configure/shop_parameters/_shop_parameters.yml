@@ -25,3 +25,7 @@ _seo_urls:
 _contacts:
     resource: "contacts.yml"
     prefix: /contacts/
+
+_groups:
+    resource: "groups.yml"
+    prefix: /customer-groups/
