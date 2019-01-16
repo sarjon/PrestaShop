@@ -28,4 +28,4 @@ _contacts:
 
 _groups:
     resource: "groups.yml"
-    prefix: /customer-groups/
+    prefix: /groups/

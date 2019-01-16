@@ -1,4 +1,4 @@
-admin_customer_groups_index:
+admin_groups_index:
     path: /
     methods: [GET]
     defaults:
