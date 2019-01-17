@@ -91,7 +91,7 @@ final class GroupQueryBuilder implements DoctrineQueryBuilderInterface
 
         $qb = $this->getGroupQueryBuilder()
             ->select('g.*, gl.*')
-            ->addSelect($customersCountInGroupQuery)
+            ->addSelect('('. $customersCountInGroupQuery . ') AS nb ')
             ->setParameter('context_shop_ids', $this->contextShopIds, Connection::PARAM_INT_ARRAY)
         ;
 

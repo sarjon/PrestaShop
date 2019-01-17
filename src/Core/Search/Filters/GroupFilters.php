@@ -24,30 +24,26 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShopBundle\Controller\Admin\Configure\ShopParameters;
+namespace PrestaShop\PrestaShop\Core\Search\Filters;
 
-use PrestaShop\PrestaShop\Core\Search\Filters\GroupFilters;
-use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use PrestaShop\PrestaShop\Core\Search\Filters;
 
 /**
- * Manages pages under "Configure > Shop parameters > Customer Settings > Groups" menu
+ * Stores filters for Group grid
  */
-class GroupController extends FrameworkBundleAdminController
+final class GroupFilters extends Filters
 {
     /**
-     * @param Request $request
-     * @param GroupFilters $filters
-     *
-     * @return Response
+     * {@inheritdoc}
      */
-    public function indexAction(Request $request, GroupFilters $filters)
+    public static function getDefaults()
     {
-        $grid = $this->get('prestashop.core.grid.factory.group')->getGrid($filters);
-
-        return $this->render('@PrestaShop/Admin/Configure/ShopParameters/Groups/index.html.twig', [
-            'grid' => $this->presentGrid($grid),
-        ]);
+        return [
+            'limit' => 50,
+            'offset' => 0,
+            'orderBy' => 'id_group',
+            'sortOrder' => 'asc',
+            'filters' => [],
+        ];
     }
 }

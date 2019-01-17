@@ -171,15 +171,6 @@ final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ])
                 ->setAssociatedColumn('name')
             )
-            ->add((new Filter('name', TextType::class))
-                ->setTypeOptions([
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => $this->translator->trans('Search name', [], 'Admin.Shopparameters.Help'),
-                    ],
-                ])
-                ->setAssociatedColumn('name')
-            )
             ->add((new Filter('reduction', TextType::class))
                 ->setTypeOptions([
                     'required' => false,
@@ -189,14 +180,14 @@ final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ])
                 ->setAssociatedColumn('reduction')
             )
-            ->add((new Filter('members', NumberType::class))
+            ->add((new Filter('nb', NumberType::class))
                 ->setTypeOptions([
                     'required' => false,
                     'attr' => [
                         'placeholder' => $this->translator->trans('Search members', [], 'Admin.Shopparameters.Help'),
                     ],
                 ])
-                ->setAssociatedColumn('members')
+                ->setAssociatedColumn('nb')
             )
             ->add((new Filter('show_prices', ChoiceType::class))
                 ->setTypeOptions([
@@ -215,6 +206,10 @@ final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ->setAssociatedColumn('date_add')
             )
             ->add((new Filter('actions', SearchAndResetType::class))
+                ->setTypeOptions([
+                    'reset_route' => 'admin_groups_index',
+                    'redirect_route' => 'admin_groups_index',
+                ])
                 ->setAssociatedColumn('actions')
             )
         ;

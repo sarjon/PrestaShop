@@ -117,3 +117,8 @@ services:
             - "@=service('router').generate('admin_profiles_index')"
             - '@prestashop.core.grid.action.row.accessibility_checker.delete_profile'
         public: true
+
+    prestashop.core.grid.definition.factory.group:
+      class: 'PrestaShop\PrestaShop\Core\Grid\Definition\Factory\GroupGridDefinitionFactory'
+      parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+      public: true

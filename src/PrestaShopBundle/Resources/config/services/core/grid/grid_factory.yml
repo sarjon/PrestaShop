@@ -127,3 +127,12 @@ services:
             - '@prestashop.core.grid.filter.form_factory'
         calls:
           - [setHookDispatcher, ['@prestashop.core.hook.dispatcher']]
+
+    prestashop.core.grid.factory.group:
+      class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+      arguments:
+        - '@prestashop.core.grid.definition.factory.group'
+        - '@prestashop.core.grid.data.factory.group'
+        - '@prestashop.core.grid.filter.form_factory'
+      calls:
+        - [setHookDispatcher, ['@prestashop.core.hook.dispatcher']]
