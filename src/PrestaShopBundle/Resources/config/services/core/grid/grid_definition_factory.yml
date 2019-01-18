@@ -121,4 +121,6 @@ services:
     prestashop.core.grid.definition.factory.group:
       class: 'PrestaShop\PrestaShop\Core\Grid\Definition\Factory\GroupGridDefinitionFactory'
       parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+      arguments:
+        - '@=service("prestashop.adapter.legacy.context").getLanguage().date_format_lite'
       public: true

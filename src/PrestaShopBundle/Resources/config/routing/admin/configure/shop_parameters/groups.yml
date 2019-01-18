@@ -3,3 +3,4 @@ admin_groups_index:
     methods: [GET]
     defaults:
       _controller: 'PrestaShopBundle:Admin\Configure\ShopParameters\Group:index'
+      _legacy_controller: 'AdminGroups'

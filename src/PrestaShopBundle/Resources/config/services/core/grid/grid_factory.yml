@@ -132,7 +132,7 @@ services:
       class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
       arguments:
         - '@prestashop.core.grid.definition.factory.group'
-        - '@prestashop.core.grid.data.factory.group'
+        - '@prestashop.core.gird.data.factory.group_decorator'
         - '@prestashop.core.grid.filter.form_factory'
       calls:
         - [setHookDispatcher, ['@prestashop.core.hook.dispatcher']]

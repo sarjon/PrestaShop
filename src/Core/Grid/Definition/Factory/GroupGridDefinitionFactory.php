@@ -36,10 +36,10 @@ use PrestaShop\PrestaShop\Core\Grid\Action\Type\SimpleGridAction;
 use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ActionColumn;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\BulkActionColumn;
+use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\DateTimeColumn;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\DataColumn;
 use PrestaShop\PrestaShop\Core\Grid\Filter\Filter;
 use PrestaShop\PrestaShop\Core\Grid\Filter\FilterCollection;
-use PrestaShopBundle\Form\Admin\Type\DatePickerType;
 use PrestaShopBundle\Form\Admin\Type\DateRangeType;
 use PrestaShopBundle\Form\Admin\Type\SearchAndResetType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -51,6 +51,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
 {
+    private $creationDateFormat;
+
+    /**
+     * @param string $creationDateFormat Date format in which Group creation date is displayed.
+     */
+    public function __construct($creationDateFormat)
+    {
+        $this->creationDateFormat = $creationDateFormat;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -74,7 +84,6 @@ final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
     {
         return (new ColumnCollection())
             ->add((new BulkActionColumn('group_bulk'))
-                ->setName($this->trans('Group name', [], 'Admin.Shopparameters.Feature'))
                 ->setOptions([
                     'bulk_field' => 'id_group',
                 ])
@@ -107,12 +116,14 @@ final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ->setName($this->trans('Show prices', [], 'Admin.Shopparameters.Feature'))
                 ->setOptions([
                     'field' => 'show_prices',
+                    'sortable' => false,
                 ])
             )
-            ->add((new DataColumn('date_add'))
-                ->setName($this->trans('Creation date', array(), 'Admin.Shopparameters.Feature'))
+            ->add((new DateTimeColumn('date_add'))
+                ->setName($this->trans('Creation date', [], 'Admin.Shopparameters.Feature'))
                 ->setOptions([
                     'field' => 'date_add',
+                    'format' => $this->creationDateFormat,
                 ])
             )
             ->add((new ActionColumn('actions'))
