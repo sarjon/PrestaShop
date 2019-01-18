@@ -26,6 +26,8 @@
 
 namespace PrestaShopBundle\Controller\Admin\Configure\ShopParameters;
 
+use PrestaShop\PrestaShop\Core\Domain\Group\Query\GetDefaultGroups;
+use PrestaShop\PrestaShop\Core\Group\Provider\DefaultGroup;
 use PrestaShop\PrestaShop\Core\Search\Filters\GroupFilters;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,10 +46,14 @@ class GroupController extends FrameworkBundleAdminController
      */
     public function indexAction(Request $request, GroupFilters $filters)
     {
+        /** @var DefaultGroup $defaultGroups */
+        $defaultGroups = $this->getQueryBus()->handle(new GetDefaultGroups());
+
         $grid = $this->get('prestashop.core.grid.factory.group')->getGrid($filters);
 
         return $this->render('@PrestaShop/Admin/Configure/ShopParameters/Groups/index.html.twig', [
             'grid' => $this->presentGrid($grid),
+            'defaultGroups' => $defaultGroups,
         ]);
     }
 }
