@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.core.domain.group.command_handler.save_default_groups_handler:
+    class: PrestaShop\PrestaShop\Core\Domain\Group\CommandHandler\SaveDefaultGroupsHandler
+    arguments:
+      - '@prestashop.adapter.legacy.configuration'
+    tags:
+      - name: tactician.handler
+        command: PrestaShop\PrestaShop\Core\Domain\Group\Command\SaveDefaultGroupsCommand
