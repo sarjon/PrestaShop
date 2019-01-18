@@ -1,6 +1,14 @@
 admin_groups_index:
-    path: /
-    methods: [GET]
-    defaults:
-      _controller: 'PrestaShopBundle:Admin\Configure\ShopParameters\Group:index'
-      _legacy_controller: 'AdminGroups'
+  path: /
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShopBundle:Admin\Configure\ShopParameters\Group:index'
+    _legacy_controller: 'AdminGroups'
+
+admin_groups_search:
+  path: /
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShopBundle:Admin\Common:searchGrid'
+    gridDefinitionFactoryService: prestashop.core.grid.definition.factory.group
+    redirectRoute: admin_groups_index

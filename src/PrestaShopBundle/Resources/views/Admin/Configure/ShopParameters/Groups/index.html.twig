@@ -21,3 +21,9 @@
     </div>
   </div>
 {% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+  {% include '@PrestaShop/Admin/Configure/ShopParameters/Groups/Blocks/javascript.html.twig' %}
+{% endblock %}

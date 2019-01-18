@@ -218,7 +218,11 @@ final class GroupGridDefinitionFactory extends AbstractGridDefinitionFactory
             )
             ->add((new Filter('actions', SearchAndResetType::class))
                 ->setTypeOptions([
-                    'reset_route' => 'admin_groups_index',
+                    'reset_route' => 'admin_common_reset_search',
+                    'reset_route_params' => [
+                        'controller' => 'group',
+                        'action' => 'index',
+                    ],
                     'redirect_route' => 'admin_groups_index',
                 ])
                 ->setAssociatedColumn('actions')

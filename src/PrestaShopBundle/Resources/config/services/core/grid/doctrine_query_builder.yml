@@ -108,3 +108,4 @@ services:
             - '%database_prefix%'
             - "@=service('prestashop.adapter.legacy.context').getContext().language.id"
             - "@=service('prestashop.adapter.legacy.context').getContext().shop.getContextListShopID()"
+            - '@prestashop.core.query.doctrine_search_criteria_applicator'
