@@ -26,9 +26,9 @@
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 {% trans_default_domain 'Admin.International.Feature' %}
 
-{% set addUpdateLanguageForm, copyLanguageForm, exportLanguageForm, modifyTranslationsForm =
+{% set addUpdateLanguageForm, copyLanguageForm, exportLanguageForm, modifyTranslationsForm, importLanguagePackForm =
         translationSettingsForm.add_update_language, translationSettingsForm.copy_language,
-        translationSettingsForm.export_language, translationSettingsForm.modify_translations
+        translationSettingsForm.export_language, translationSettingsForm.modify_translations, translationSettingsForm.import_language_pack
 %}
 
 {% block content %}
@@ -52,6 +52,10 @@
 
     <div class="col-xl-10">
       {% include '@PrestaShop/Admin/Improve/International/Translations/Blocks/add_update_language.html.twig' %}
+    </div>
+
+    <div class="col-xl-10">
+      {% include '@PrestaShop/Admin/Improve/International/Translations/Blocks/import_language_pack.html.twig' %}
     </div>
 
     <div class="col-xl-10">

@@ -23,13 +23,12 @@
  * International Registered Trademark & Property of PrestaShop SA
  *#}
 
-{% trans_default_domain 'Admin.International.Feature' %}
-
-{{ form_start(exportLanguageForm, {action: path('admin_international_translations_export_theme')}) }}
+{{ form_start(importLanguagePackForm, {action: path('admin_international_translations_export_theme')}) }}
 
 <div class="card">
   <h3 class="card-header">
-    <i class="material-icons">cloud_download</i> {{ 'Export a language'|trans }}
+    <i class="material-icons">cloud_upload</i>
+    {{ 'Import a language pack manually'|trans({}, 'Admin.International.Feature') }}
   </h3>
   <div class="card-block row">
     <div class="card-text">
@@ -37,8 +36,7 @@
         <div class="col-sm">
           <div class="alert alert-info" role="alert">
             <div class="alert-text">
-              {{ 'Export data from one language to a file (language pack).'|trans({}, 'Admin.International.Help') }} <br>
-              {{ 'Select which theme you would like to export your translations to.'|trans({}, 'Admin.International.Help') }}
+              {{ 'If the language file format is ISO_code.gzip (e.g. "us.gzip"), and the language corresponding to this package does not exist, it will automatically be created.'|trans({}, 'Admin.International.Help') }} <br>
             </div>
           </div>
         </div>
@@ -46,35 +44,38 @@
 
       <div class="form-group row">
         <label class="form-control-label">
-          {{ 'Language'|trans({}, 'Admin.Global') }}
+          {{ 'Language pack to import'|trans({}, 'Admin.International.Feature') }}
         </label>
         <div class="col-sm">
-          {{ form_errors(exportLanguageForm.iso_code) }}
-          {{ form_widget(exportLanguageForm.iso_code) }}
+          {{ form_errors(importLanguagePackForm.language_pack_to_import) }}
+          {{ form_widget(importLanguagePackForm.language_pack_to_import) }}
         </div>
       </div>
 
       <div class="form-group row">
         <label class="form-control-label">
-          {{ 'Select your theme'|trans }}
+          {{ 'Select your theme'|trans({}, 'Admin.International.Feature') }}
         </label>
         <div class="col-sm">
-          {{ form_errors(exportLanguageForm.theme_name) }}
-          {{ form_widget(exportLanguageForm.theme_name) }}
+          {{ form_errors(importLanguagePackForm.theme) }}
+          {{ form_widget(importLanguagePackForm.theme) }}
         </div>
       </div>
-      {{ form_rest(exportLanguageForm) }}
+
+      {% block translations_import_language_pack_form_rest %}
+        {{ form_rest(importLanguagePackForm) }}
+      {% endblock %}
     </div>
   </div>
 
   <div class="card-footer">
     <div class="d-flex justify-content-end">
       <button class="btn btn-primary">
-        <i class="material-icons">cloud_download</i>
-        <span>{{ 'Export'|trans({}, 'Admin.Actions') }}</span>
+        <i class="material-icons">cloud_upload</i>
+        <span>{{ 'Import'|trans({}, 'Admin.Actions') }}</span>
       </button>
     </div>
   </div>
 </div>
 
-{{ form_end(exportLanguageForm) }}
+{{ form_end(importLanguagePackForm) }}

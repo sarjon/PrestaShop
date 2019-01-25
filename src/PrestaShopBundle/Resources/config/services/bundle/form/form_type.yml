@@ -702,3 +702,10 @@ services:
             - { method: setTranslator, arguments: ['@translator'] }
         tags:
             - { name: form.type }
+
+    form.type.language.import_language_pack:
+      class: 'PrestaShopBundle\Form\Admin\Improve\International\Translations\ImportLanguagePackType'
+      arguments:
+        - '@=service("prestashop.core.form.choice_provider.theme").getChoices()'
+      tags:
+        - { name: form.type }

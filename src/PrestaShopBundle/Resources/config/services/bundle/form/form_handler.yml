@@ -267,6 +267,7 @@ services:
             -
               'modify_translations': 'PrestaShopBundle\Form\Admin\Improve\International\Translations\ModifyTranslationsType'
               'add_update_language': 'PrestaShopBundle\Form\Admin\Improve\International\Translations\AddUpdateLanguageType'
+              'import_language_pack': 'PrestaShopBundle\Form\Admin\Improve\International\Translations\ImportLanguagePackType'
               'export_language': 'PrestaShopBundle\Form\Admin\Improve\International\Translations\ExportThemeLanguageType'
               'copy_language': 'PrestaShopBundle\Form\Admin\Improve\International\Translations\CopyLanguageType'
             - 'TranslationSettingsPage'
