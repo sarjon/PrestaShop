@@ -26,3 +26,10 @@ admin_languages_edit:
   defaults:
     _controller: 'PrestaShopBundle:Admin\Improve\International\Language:edit'
     _legacy_controller: AdminLanguages
+
+admin_languages_search_language_pack:
+  path: /search-language-pack
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShopBundle:Admin\Improve\International\Language:searchLanguagePack'
+    _legacy_controller: AdminLanguages

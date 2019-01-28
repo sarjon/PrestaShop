@@ -33,6 +33,7 @@ import SubmitBulkExtension from '../../components/grid/extension/submit-bulk-act
 import SubmitRowActionExtension from '../../components/grid/extension/action/row/submit-row-action-extension';
 import BulkActionCheckboxExtension from '../../components/grid/extension/bulk-action-checkbox-extension';
 import ChoiceTree from "../../components/form/choice-tree";
+import LanguagePackSearcher from "./language-pack-searcher";
 
 const $ = window.$;
 
@@ -50,4 +51,6 @@ $(document).ready(() => {
 
   // needed for shop association input in form
   new ChoiceTree('#language_shop_association').enableAutoCheckChildren();
+
+  new LanguagePackSearcher();
 });

@@ -32,9 +32,12 @@ use PrestaShop\PrestaShop\Core\Domain\Language\Exception\LanguageConstraintExcep
 use PrestaShop\PrestaShop\Core\Domain\Language\Exception\LanguageException;
 use PrestaShop\PrestaShop\Core\Domain\Language\Exception\LanguageImageUploadingException;
 use PrestaShop\PrestaShop\Core\Domain\Language\Exception\LanguageNotFoundException;
+use PrestaShop\PrestaShop\Core\Domain\Language\Query\SearchForLanguagePack;
+use PrestaShop\PrestaShop\Core\Domain\Language\QueryResult\LanguagePackSearchResult;
 use PrestaShop\PrestaShop\Core\Search\Filters\LanguageFilters;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController as AbstractAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -135,6 +138,25 @@ class LanguageController extends AbstractAdminController
 
         return $this->render('@PrestaShop/Admin/Improve/International/Language/edit.html.twig', [
             'languageForm' => $languageForm->createView(),
+        ]);
+    }
+
+    /**
+     * Searches for languges pack by ISO code
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchLanguagePackAction(Request $request)
+    {
+        /** @var LanguagePackSearchResult $searchResult */
+        $searchResult = $this->getQueryBus()->handle(new SearchForLanguagePack($request->query->get('iso_code')));
+
+        return $this->json([
+            'language_name' => $searchResult->getLanguageName(),
+            'language_pack_version' => $searchResult->getLanguagePackVersion(),
+            'language_pack_download_url' => $searchResult->getLanguagePackDownloadUrl(),
         ]);
     }
 

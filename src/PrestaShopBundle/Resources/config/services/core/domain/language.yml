@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.core.domain.language.query_handler.search_for_language_pack_handler:
+    class: PrestaShop\PrestaShop\Core\Domain\Language\QueryHandler\SearchForLanguagePackHandler
+    arguments:
+      - '@=service("prestashop.core.foundation.version").getVersion()'
+    tags:
+      - { name: tactician.handler, command: PrestaShop\PrestaShop\Core\Domain\Language\Query\SearchForLanguagePack }

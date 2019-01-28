@@ -1,0 +1,77 @@
+<?php
+/**
+ * 2007-2018 PrestaShop
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+ * versions in the future. If you wish to customize PrestaShop for your
+ * needs please refer to http://www.prestashop.com for more information.
+ *
+ * @author    PrestaShop SA <contact@prestashop.com>
+ * @copyright 2007-2018 PrestaShop SA
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * International Registered Trademark & Property of PrestaShop SA
+ */
+
+namespace PrestaShop\PrestaShop\Core\Domain\Language\QueryHandler;
+
+use PrestaShop\PrestaShop\Core\Domain\Language\Query\SearchForLanguagePack;
+use PrestaShop\PrestaShop\Core\Domain\Language\QueryResult\LanguagePackSearchResult;
+
+/**
+ * Searches for language pack hosted in prestashop.com
+ */
+final class SearchForLanguagePackHandler implements SearchForLanguagePackHandlerInterface
+{
+    const LANGUAGE_PACK_SEARCH_URL = 'https://www.prestashop.com/download/lang_packs/get_language_pack.php?version=%s&iso_lang=%s';
+    const LANGUAGE_PACK_DOWNLOAD_URL = 'http://www.prestashop.com/download/lang_packs/gzip/%s/%s.gzip';
+
+    /**
+     * @var string
+     */
+    private $psVersion;
+
+    /**
+     * @param string $psVersion
+     */
+    public function __construct($psVersion)
+    {
+        $this->psVersion = $psVersion;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(SearchForLanguagePack $query)
+    {
+        $languagePackUrl = sprintf(self::LANGUAGE_PACK_SEARCH_URL, $this->psVersion, $query->getIsoCode()->getValue());
+        $response = file_get_contents($languagePackUrl);
+
+        if (false === $response) {
+            //@todo:
+        }
+
+        $data = json_decode($response, true);
+
+        if (isset($data['error'])) {
+            //@todo:
+        }
+
+        return new LanguagePackSearchResult(
+            $data['name'],
+            $data['version'],
+            sprintf(self::LANGUAGE_PACK_DOWNLOAD_URL, $data['version'], $data['iso_code'])
+        );
+    }
+}
