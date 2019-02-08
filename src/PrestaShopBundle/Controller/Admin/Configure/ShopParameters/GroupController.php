@@ -30,6 +30,7 @@ use PrestaShop\PrestaShop\Core\Domain\Group\Query\GetDefaultGroups;
 use PrestaShop\PrestaShop\Core\Group\Provider\DefaultGroup;
 use PrestaShop\PrestaShop\Core\Search\Filters\GroupFilters;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use PrestaShopBundle\Form\Admin\Configure\ShopParameters\Group\DefaultGroupsOptionsType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

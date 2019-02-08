@@ -32,7 +32,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * Type is used to build form for default groups configuration
  */
-class DefaultGroupsType extends AbstractType
+class DefaultGroupsOptionsType extends AbstractType
 {
     /**
      * {@inheritdoc}
