@@ -38,12 +38,6 @@ class EditManufacturerAddressCommand
      * @var AddressId
      */
     private $addressId;
-
-    /**
-     * @var int|null
-     */
-    private $manufacturerId;
-
     /**
      * @var string|null
      */
@@ -123,22 +117,6 @@ class EditManufacturerAddressCommand
     public function setAddressId($addressId)
     {
         $this->addressId = $addressId;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getManufacturerId()
-    {
-        return $this->manufacturerId;
-    }
-
-    /**
-     * @param int|null $manufacturerId
-     */
-    public function setManufacturerId($manufacturerId)
-    {
-        $this->manufacturerId = $manufacturerId;
     }
 
     /**

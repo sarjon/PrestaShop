@@ -48,12 +48,6 @@ final class AddManufacturerAddressHandler implements AddManufacturerAddressHandl
     {
         $address = $this->createAddressFromCommand($command);
 
-        if (false === $address->add()) {
-            throw new AddressException(
-                sprintf('Failed to add new address "%s"', $command->getAddress())
-            );
-        }
-
         return new AddressId((int) $address->id);
     }
 
@@ -78,6 +72,14 @@ final class AddManufacturerAddressHandler implements AddManufacturerAddressHandl
         $address->phone_mobile = $command->getMobilePhone();
         $address->other = $command->getOther();
         $address->alias = 'manufacturer';
+
+        if (false === $address->validateFields(false)) {
+            throw new AddressException('Invalid data supplied for manufacturer address');
+        }
+
+        if (false === $address->add()) {
+            throw new AddressException(sprintf('Failed to add new address "%s"', $command->getAddress()));
+        }
 
         return $address;
     }

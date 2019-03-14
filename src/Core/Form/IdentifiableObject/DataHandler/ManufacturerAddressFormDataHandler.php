@@ -95,7 +95,6 @@ final class ManufacturerAddressFormDataHandler implements FormDataHandlerInterfa
      */
     private function fillCommandWithData(EditManufacturerAddressCommand $command, array $data)
     {
-        $command->setManufacturerId($data['id_manufacturer']);
         $command->setLastName($data['last_name']);
         $command->setFirstName($data['first_name']);
         $command->setAddress($data['address']);

@@ -146,7 +146,9 @@ class ManufacturerAddressType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     //@todo: TypedRegexConstraint isPostcode another PR
-                    'pattern' => '/^[a-zA-Z 0-9-]+$/',
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z 0-9-]+$/',
+                    ]),
                 ],
             ])
             //@todo: TypedRegexConstraint isCityName another PR
@@ -197,12 +199,7 @@ class ManufacturerAddressType extends AbstractType
             ])
             ->add('other', TextType::class, [
                 'required' => false,
-                'constraints' => [
-                    new Regex([
-                        //@todo: TypedRegexConstraint isMessage another PR
-                        'pattern' => '/[<>{}]/i',
-                    ]),
-                ],
+                //@todo: TypedRegexConstraint isMessage another PR
             ])
         ;
     }
