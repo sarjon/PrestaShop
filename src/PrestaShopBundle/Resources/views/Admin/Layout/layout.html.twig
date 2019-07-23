@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="robots" content="NOFOLLOW, NOINDEX">
+
+  <link rel="icon" type="image/x-icon" href="{{ imgDir }}favicon.ico" />
+  <link rel="apple-touch-icon" href="{{ imgDir }}app_icon.png" />
+
+  <title>{% block title %}{% endblock %}• {{ shopName }}</title>
+
+  {% block styles %}
+    <link href="{{ asset('themes/new-theme/public/theme.css') }}" rel="stylesheet" />
+    <link href="/js/jquery/plugins/chosen/jquery.chosen.css" rel="stylesheet" />
+    <link href="{{ asset('themes/default/css/vendor/nv.d3.css') }}" rel="stylesheet" />
+  {% endblock %}
+
+  {% block javascripts_head %}
+    <script src="{{ asset('themes/new-theme/public/main.bundle.js') }}"></script>
+  {% endblock %}
+
+  {{ renderhook('displayBackOfficeHeader') }}
+</head>
+<body>
+  {% block content %}{% endblock %}
+</body>
+</html>

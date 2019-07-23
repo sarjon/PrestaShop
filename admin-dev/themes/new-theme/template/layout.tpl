@@ -83,7 +83,9 @@
         {l s='For security reasons, you must also delete the /install folder.'}
       </div>
     {else}
+      THIS IS PAGE HEADER TOOLBAR
       {if isset($page_header_toolbar)}{$page_header_toolbar}{/if}
+      THIS IS PAGE HEADER TOOLBAR END
       {if isset($modal_module_list)}{$modal_module_list}{/if}
 
       <div class="{if $display_header}content-div{/if} {if !isset($page_header_toolbar)}-notoolbar{/if} {if $current_tab_level == 3}with-tabs{/if}">

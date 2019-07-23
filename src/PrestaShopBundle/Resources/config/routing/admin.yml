@@ -21,3 +21,11 @@ _admin_improve_routing:
 _admin_errors:
     resource: "admin/_errors.yml"
     prefix: /errors
+
+layout_new:
+  path: /layout/new
+  controller: PrestaShopBundle\Controller\Admin\LayoutController::index
+
+layout_legacy:
+  path: /layout/legacy
+  controller: PrestaShopBundle\Controller\Admin\LayoutController::legacy
