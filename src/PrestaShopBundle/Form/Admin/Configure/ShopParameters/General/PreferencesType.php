@@ -27,10 +27,13 @@
 namespace PrestaShopBundle\Form\Admin\Configure\ShopParameters\General;
 
 use PrestaShop\PrestaShop\Adapter\Entity\Order;
+use PrestaShop\PrestaShop\Adapter\Tools;
+use PrestaShopBundle\Form\Admin\Type\CustomContentType;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -90,19 +93,42 @@ class PreferencesType extends TranslatorAwareType
         $isSslEnabled = $configuration->getBoolean('PS_SSL_ENABLED');
 
         if ($this->isSecure) {
-            $builder->add('enable_ssl', SwitchType::class);
+            $builder->add('enable_ssl', SwitchType::class, [
+                'label' => $this->trans('Enable SSL', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('If you want to enable SSL on all the pages of your shop, activate the "Enable on all the pages" option below.', 'Admin.Shopparameters.Help')
+            ]);
+        } else {
+            // SSL URI is used for the merchant to check if he has SSL enabled
+            $sslUri = 'https://' . $toolsAdapter->getShopDomainSsl() . $request->getRequestUri();
+
+            $builder->add('enable_ssl', CustomContentType::class, [
+                'label' => $this->trans('Enable SSL', 'Admin.Shopparameters.Feature'),
+                'template' => '@PrestaShop/Admin/Configure/ShopParameters/ssl_form_notification.html.twig',
+            ]);
         }
 
         $builder
             ->add('enable_ssl_everywhere', SwitchType::class, [
                 'disabled' => !$isSslEnabled,
+                'label' => $this->trans('Enable SSL on all pages', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('When enabled, all the pages of your shop will be SSL-secured.', 'Admin.Shopparameters.Help'),
             ])
             ->add('enable_token', SwitchType::class, [
+                'label' => $this->trans('Increase front office security', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('Enable or disable token in the Front Office to improve PrestaShop\'s security .', 'Admin.Shopparameters.Help'),
                 'disabled' => !$this->isContextDependantOptionEnabled(),
             ])
-            ->add('allow_html_iframes', SwitchType::class)
-            ->add('use_htmlpurifier', SwitchType::class)
+            ->add('allow_html_iframes', SwitchType::class, [
+                'label' => $this->trans('Allow iframes on HTML fields', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('Allow iframes on text fields like product description. We recommend that you leave this option disabled.', 'Admin.Shopparameters.Help'),
+            ])
+            ->add('use_htmlpurifier', SwitchType::class, [
+                'label' => $this->trans('Use HTMLPurifier Library', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('Clean the HTML content on text fields. We recommend that you leave this option enabled.', 'Admin.Shopparameters.Help'),
+            ])
             ->add('price_round_mode', ChoiceType::class, [
+                'label' => $this->trans('Round mode', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('You can choose among 6 different ways of rounding prices. "Round up away from zero ..." is the recommended behavior.', 'Admin.Shopparameters.Help'),
                 'choices_as_values' => true,
                 'choices' => [
                     'Round up away from zero, when it is half way there (recommended)' => $configuration->get('PS_ROUND_HALF_UP'),
@@ -114,6 +140,8 @@ class PreferencesType extends TranslatorAwareType
                 ],
             ])
             ->add('price_round_type', ChoiceType::class, [
+                'label' => $this->trans('Round type', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('You can choose when to round prices: either on each item, each line or the total (of an invoice, for example).', 'Admin.Shopparameters.Help'),
                 'choices_as_values' => true,
                 'choices' => [
                     'Round on each item' => Order::ROUND_ITEM,
@@ -121,13 +149,25 @@ class PreferencesType extends TranslatorAwareType
                     'Round on the total' => Order::ROUND_TOTAL,
                 ],
             ])
-            ->add('display_suppliers', SwitchType::class)
-            ->add('display_manufacturers', SwitchType::class)
-            ->add('display_best_sellers', SwitchType::class)
+            ->add('display_suppliers', SwitchType::class, [
+                'label' => $this->trans('Display suppliers', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('Enable suppliers page on your front office even when its module is disabled.', 'Admin.Shopparameters.Help'),
+            ])
+            ->add('display_manufacturers', SwitchType::class, [
+                'label' => $this->trans('Display brands', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('Enable brands page on your front office even when its module is disabled.', 'Admin.Shopparameters.Help'),
+            ])
+            ->add('display_best_sellers', SwitchType::class, [
+                'label' => $this->trans('Display best sellers', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('Enable best sellers page on your front office even when its respective module is disabled.', 'Admin.Shopparameters.Help'),
+            ])
             ->add('multishop_feature_active', SwitchType::class, [
+                'label' => $this->trans('Enable Multistore', 'Admin.Shopparameters.Feature'),
+                'help' => $this->trans('The multistore feature allows you to manage several e-shops with one Back Office. If this feature is enabled, a "Multistore" page will be available in the "Advanced Parameters" menu.', 'Admin.Shopparameters.Help'),
                 'disabled' => !$this->isContextDependantOptionEnabled(),
             ])
             ->add('shop_activity', ChoiceType::class, [
+                'label' => $this->trans('Main Shop Activity', 'Admin.Shopparameters.Feature'),
                 'required' => false,
                 'choices_as_values' => true,
                 'placeholder' => $this->trans('-- Please choose your main activity --', 'Install'),
